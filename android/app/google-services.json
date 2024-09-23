@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "303208096330",
+    "project_id": "mednext-1c699",
+    "storage_bucket": "mednext-1c699.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303208096330:android:b8547de5655c528257fcb3",
+        "android_client_info": {
+          "package_name": "com.mednext.mednextnew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPSEW8EWCbYothWpgebMmnXYEAdv0StHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
