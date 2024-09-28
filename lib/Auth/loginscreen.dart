@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -52,9 +53,9 @@ class _LoginpageState extends State<Loginpage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 70),
                   child: Container(
-                    height: 45,
                     child: TextFormField(
                       controller: emailController,
+
                       validator: (value) {
                         // Check if this field is empty
                         if (value == null || value.isEmpty) {
@@ -81,6 +82,7 @@ class _LoginpageState extends State<Loginpage> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide(color: kdeepblue)),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       ),
                     ),
                   ),
@@ -88,7 +90,8 @@ class _LoginpageState extends State<Loginpage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
                   child: Container(
-                    height: 45,
+
+
                     child: TextFormField(
                       controller: passWordController,
                       validator: (value) {
@@ -113,7 +116,8 @@ class _LoginpageState extends State<Loginpage> {
                             borderSide: BorderSide(color: kdeepblue)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: kdeepblue)),
+                            borderSide: BorderSide(color: kdeepblue),),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         suffixIcon: IconButton(
                           icon: Icon(
                             securetext
@@ -156,26 +160,30 @@ class _LoginpageState extends State<Loginpage> {
                                 child: Text(
                               "Continue",
                               style: TextStyle(fontSize: 15, color: Colors.white),
-                            ))),
+                            ),
+                            ),
+                        ),
                       ),
                     );
                   }
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 14),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(color: kgrey, fontSize: 15),
+                GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 14),
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: kgrey, fontSize: 15),
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Image.asset("asset/or.png"),
-                ),
-                Image.asset("asset/google.png"),
-                Image.asset("asset/facebook.png"),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 12),
+                //   child: Image.asset("asset/or.png"),
+                // ),
+                // Image.asset("asset/google.png"),
+                // Image.asset("asset/facebook.png"),
                 SizedBox(
-                  height: Get.height * 0.1,
+                  height: Get.height * 0.3,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -189,27 +197,27 @@ class _LoginpageState extends State<Loginpage> {
                 SizedBox(
                   height: 8,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(Mobileloginpage());
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Continue with with phone number',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: kblack,
-                        ),
-                      ),
-                      Icon(
-                        Icons.chevron_right_sharp,
-                        color: kblack,
-                      )
-                    ],
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.to(Mobileloginpage());
+                //   },
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         'Continue with with phone number',
+                //         style: TextStyle(
+                //           fontSize: 15,
+                //           color: kblack,
+                //         ),
+                //       ),
+                //       Icon(
+                //         Icons.chevron_right_sharp,
+                //         color: kblack,
+                //       )
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

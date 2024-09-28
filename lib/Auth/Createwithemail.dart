@@ -80,6 +80,7 @@ class _CreatewithemailState extends State<Createwithemail> {
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide(color: kdeepblue)),
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                             ),
                           ),
                         ),
@@ -109,6 +110,7 @@ class _CreatewithemailState extends State<Createwithemail> {
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide(color: kdeepblue)),
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                             ),
                           ),
                         ),
@@ -139,6 +141,7 @@ class _CreatewithemailState extends State<Createwithemail> {
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide(color: kdeepblue)),
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   securetext ? Icons.visibility_off : Icons.visibility,
@@ -180,6 +183,7 @@ class _CreatewithemailState extends State<Createwithemail> {
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide(color: kdeepblue)),
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   securetext1 ? Icons.visibility_off : Icons.visibility,

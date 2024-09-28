@@ -73,6 +73,7 @@ class AuthController extends GetxController {
     }
   }
 
+
   Future<void> login(GlobalKey<FormState> formKey, String email, String password) async {
     if (formKey.currentState!.validate()) {
       loading = true;
