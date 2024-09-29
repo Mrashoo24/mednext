@@ -14,7 +14,7 @@ class _SetnewpasswordState extends State<Setnewpassword> {
   bool securetext = true;
   bool value = false;
   final _formkey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
+  var newpassWordcontroller = TextEditingController();
   var passWordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                 child: Container(
                   height: 45,
                   child: TextFormField(
-                    controller: passWordController,
+                    controller: newpassWordcontroller,
 
                     validator: (value){
                       if(value == null || value.isEmpty)
