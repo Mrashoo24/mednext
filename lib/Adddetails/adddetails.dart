@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../Auth/Controller/AuthController.dart';
 import '../constants/colors.dart';
 import '../home/homescreen.dart';
 
@@ -22,7 +26,19 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
   final _formkey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var passWordController = TextEditingController();
+  File? _pickedImage;
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedImage = File(pickedFile.path);
+      });
+    }
+  }
   @override
+
+
+
   Widget build(BuildContext context) {
     return SafeArea  (
       child:Scaffold(
@@ -165,122 +181,177 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
         //    ),
         //  ),
         // ), temproraryly commented
-        body:SingleChildScrollView(
-          child: Column(
-            children: [
-              Text("Sign up with +91 1111111111"),
-              SizedBox(height: 20,),
-              Center(child: Icon(Icons.person_pin,color: Colors.tealAccent,size: 200,),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                child: Container(
-                  height: 45,
-                  child: TextFormField(
-
-                    decoration: InputDecoration(
-
-                      labelText:"Enter Name",
-                      labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-
-                    ),
-                    // obscureText: securetext,
+        body:GetBuilder(
+          init: AuthController(),
+          builder: (controller) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Sign up with "),
+                      Text(''),
+                    ],
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                child: Container(
-                  height: 45,
-                  child: TextFormField(
+                  SizedBox(height: 10,),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        // Show options to pick from gallery or camera
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (_) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.camera),
+                                title: const Text("Take Photo"),
+                                onTap: () {
+                                  _pickImage(ImageSource.camera);
+                                  Get.back(); // Close the bottom sheet
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.photo),
+                                title: const Text("Choose from Gallery"),
+                                onTap: () {
+                                  _pickImage(ImageSource.gallery);
+                                  Get.back(); // Close the bottom sheet
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
 
-                    decoration: InputDecoration(
-
-                      labelText:"Email Address",
-                      labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
+                      child: CircleAvatar(
+                        radius: 100,
+                        backgroundColor: Colors.tealAccent,
+                        backgroundImage:
+                        _pickedImage != null ? FileImage(_pickedImage!) : null,
+                        child: _pickedImage == null
+                            ? const Icon(Icons.person, color: Colors.white, size: 100)
+                            : null, // Show default icon if no image is picked
                       ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-
-                    ),
-                    // obscureText: securetext,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                child: Container(
-                  height: 45,
-                  child: TextFormField(
-
-                    decoration: InputDecoration(
-
-                      labelText:"Select State",
-                      labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: kdeepblue)
-                      ),
-
-                    ),
-                    // obscureText: securetext,
-                  ),
-                ),
-              ),
-              SizedBox(height: Get.height*0.2,),
-              Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                child: GestureDetector(
-                  onTap: (){
-                    Get.to(Homescreenone(),);
-                  },
-                  child: Container(
-                    height: 45,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: kdeepblue,
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Center(child: Text("Continue",style: TextStyle(fontSize: 15,color: Colors.white),
-                    ),
                     ),
                   ),
-                ),
+
+
+                  SizedBox(height: 20,),
+                  // Center(child: Icon(Icons.person_pin,color: Colors.tealAccent,size: 200,),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
+                    child: Container(
+                      height: 45,
+                      child: TextFormField(
+
+                        decoration: InputDecoration(
+
+                          labelText:"Enter Name",
+                          labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+
+                        ),
+                        // obscureText: securetext,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
+                    child: Container(
+                      height: 45,
+                      child: TextFormField(
+
+                        decoration: InputDecoration(
+
+                          labelText:"Email Address",
+                          labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+
+                        ),
+                        // obscureText: securetext,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
+                    child: Container(
+                      height: 45,
+                      child: TextFormField(
+
+                        decoration: InputDecoration(
+
+                          labelText:"Select State",
+                          labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(color: kdeepblue)
+                          ),
+
+                        ),
+                        // obscureText: securetext,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Get.height*0.2,),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
+                    child: GestureDetector(
+                      onTap: (){
+                        Get.to(Homescreenone(),);
+                      },
+                      child: Container(
+                        height: 45,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: kdeepblue,
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: Center(child: Text("Continue",style: TextStyle(fontSize: 15,color: Colors.white),
+                        ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          }
         ),
 
       ),
