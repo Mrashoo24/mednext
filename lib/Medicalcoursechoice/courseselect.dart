@@ -23,30 +23,46 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
   void initState() {
 
    controller.getCategories();
-    super.initState();
+   controller.getCourse();
+   super.initState();
   }
+
   Widget _buildListPanel(CategoryController controller){
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded){
-        setState(() {
-          controller.categories[index]. isExpanded = controller.categories[index]. isExpanded ;
-        }
-        );
+        // setState(() {
+          controller.categories[index]. isExpanded =  !controller.categories[index].isExpanded! ;
+          controller.update();
+        // }
+        // );
       },
       children: controller.categories.map<ExpansionPanel>((CategoryModel item ){
         return ExpansionPanel(
           headerBuilder: (BuildContext context,bool isExpanded){
+
+
+
             return ListTile(
               title: Text(item.name),
             );
           },
-          body: ListTile(
-             title: Text(item.name),
-            subtitle: Text("math"),
-            //trailing: Icon(Icons.dangerous),
-            // onTap: (){},
+          body: ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: controller.courses.where((element) => element.categoryid == item.id).length,
+            itemBuilder: (context,index) {
+
+              var course = controller.courses.where((element) => element.categoryid == item.id).toList()[index];
+
+              return ListTile(
+                 title: Text(course.name),
+                subtitle: Text(course.name),
+                //trailing: Icon(Icons.dangerous),
+                // onTap: (){},
+              );
+            }
           ),
-         // isExpanded: item.isExpanded
+          isExpanded: item.isExpanded!
 
         );
 
@@ -65,18 +81,9 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
               appBar: AppBar(
                 title: Text("Choose Medical Course"),
                centerTitle: true,
-              leading: IconButton(
-                onPressed: (){},
-                icon: IconButton(
-                  icon: Icon(Icons.chevron_left,size: 30,),
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-
+                automaticallyImplyLeading: true,
               ),
-              ),
-              body: SingleChildScrollView(
+              body: controller.loading ? Center(child: CircularProgressIndicator(),) :SingleChildScrollView(
                 child: Column(
                   children: [
                     _buildListPanel( controller),

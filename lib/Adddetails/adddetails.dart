@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mednextnew/data/models/usermodel.dart';
 
 import '../Auth/Controller/AuthController.dart';
 import '../constants/colors.dart';
@@ -18,187 +19,110 @@ class AddMoreDetails extends StatefulWidget {
 }
 
 class _AddMoreDetailsState extends State<AddMoreDetails> {
-  String? validateEmail(String?value){
-
-  }
-  bool securetext = true;
-  bool value = false;
-  final _formkey = GlobalKey<FormState>();
+  bool loading = false;
+  final _formKey = GlobalKey<FormState>();
+  var nameController = TextEditingController();
   var emailController = TextEditingController();
-  var passWordController = TextEditingController();
   File? _pickedImage;
+  String? imageUrl;
+
+  // Dropdown-related variables
+  String selectedState = "Maharashtra";
+  String selectedCity = "Mumbai";
+  final List<String> states = ["Maharashtra", "Delhi", "Karnataka"];
+  final Map<String, List<String>> cities = {
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
+    "Delhi": ["New Delhi", "Old Delhi"],
+    "Karnataka": ["Bangalore", "Mysore"]
+  };
+
+  final AuthController authController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    _prefillUserData();
+  }
+
+  Future<void> _prefillUserData() async {
+    if (authController.userData != null) {
+      nameController.text = authController.userData!.fullName ?? '';
+      emailController.text = authController.userData!.email ?? '';
+      selectedState = authController.userData!.state ?? 'Maharashtra';
+      selectedCity = authController.userData!.city ?? cities[selectedState]![0];
+      imageUrl = authController.userData!.photoUrl;
+    }
+  }
+
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _pickedImage = File(pickedFile.path);
       });
+      await _uploadImageToFirebase();
     }
   }
+
+  Future<void> _uploadImageToFirebase() async {
+    if (_pickedImage == null) return;
+    setState(() {
+      loading = true;
+    });
+
+    String fileName = '${authController.userData!.userId}_profile.jpg';
+    FirebaseStorage storage = FirebaseStorage.instance;
+    try {
+      TaskSnapshot snapshot = await storage
+          .ref()
+          .child('profile_pictures/$fileName')
+          .putFile(_pickedImage!);
+
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      setState(() {
+        imageUrl = downloadUrl;
+        loading = false;
+      });
+
+      // Update user profile picture URL in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(authController.userData!.userId)
+          .update({'photoUrl': imageUrl});
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+      Get.snackbar('Error', 'Failed to upload image.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+    }
+  }
+
   @override
-
-
-
   Widget build(BuildContext context) {
-    return SafeArea  (
-      child:Scaffold(
+    return SafeArea(
+      child: Scaffold(
         appBar: AppBar(
-          title: const Text("Add other details"),
+          title: const Text("Add Other Details"),
           centerTitle: true,
           leading: IconButton(
-            onPressed: (){
-
+            icon: const Icon(Icons.chevron_left, size: 30),
+            onPressed: () {
+              Get.back();
             },
-            icon: IconButton(
-              icon: const Icon(Icons.chevron_left,size: 30,),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-
           ),
         ),
-        // body: SingleChildScrollView(
-        //  child: Form(
-        //    key: _formkey,
-        //    child: Column(
-        //      children: [
-        //        Text("Sign up with +91 1231231231"),
-        //        Padding(
-        //          padding: const EdgeInsets.all(20.0),
-        //          child: Container(
-        //            height: 45,
-        //            child: TextFormField(
-        //              validator: (value) {
-        //                // Check if this field is empty
-        //                if (value == null || value.isEmpty) {
-        //                  return 'This field is required';
-        //                }
-        //
-        //                // using regular expression
-        //                if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-        //                  return "Please fill the required details";
-        //                }
-        //
-        //                // the email is valid
-        //                return null;
-        //              },
-        //              decoration: InputDecoration(
-        //
-        //                labelText:"Full Name",
-        //                labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-        //                border: OutlineInputBorder(
-        //                    borderRadius: BorderRadius.circular(15),
-        //                    borderSide: BorderSide(color: kdeepblue)
-        //                ),
-        //                focusedBorder: OutlineInputBorder(
-        //                    borderRadius: BorderRadius.circular(15),
-        //                    borderSide: BorderSide(color: kdeepblue)
-        //                ),
-        //                enabledBorder: OutlineInputBorder(
-        //                    borderRadius: BorderRadius.circular(15),
-        //                    borderSide: BorderSide(color: kdeepblue)
-        //                ),
-        //
-        //
-        //
-        //              ),
-        //
-        //            ),
-        //          ),
-        //        ),
-        //        Padding(
-        //          padding: const EdgeInsets.only(left: 20,right: 20,top: 70),
-        //          child: Container(
-        //            height: 45,
-        //            child: TextFormField(
-        //              controller: emailController,
-        //              validator: (value) {
-        //                // Check if this field is empty
-        //                if (value == null || value.isEmpty) {
-        //                  return 'This field is required';
-        //                }
-        //
-        //                // using regular expression
-        //                if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-        //                  return "Please enter a valid email address";
-        //                }
-        //
-        //                // the email is valid
-        //                return null;
-        //              },
-        //              decoration: InputDecoration(
-        //
-        //                labelText:"Email-Address",
-        //                labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-        //
-        //                border: OutlineInputBorder(
-        //                    borderRadius: BorderRadius.circular(15),
-        //                    borderSide: BorderSide(color: kdeepblue)
-        //                ),
-        //                focusedBorder: OutlineInputBorder(
-        //                    borderRadius: BorderRadius.circular(15),
-        //                    borderSide: BorderSide(color: kdeepblue)
-        //                ),
-        //                enabledBorder: OutlineInputBorder(
-        //                    borderRadius: BorderRadius.circular(15),
-        //                    borderSide: BorderSide(color: kdeepblue)
-        //                ),
-        //              ),
-        //
-        //            ),
-        //          ),
-        //        ),
-        //        Padding(
-        //          padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-        //          child: GestureDetector(
-        //            onTap: (){
-        //              if(_formkey.currentState!.validate()
-        //              ){
-        //                return;
-        //              }else{
-        //
-        //
-        //                print("Enter valid Email");
-        //              }
-        //              Get.to(Homescreenone() );
-        //            },
-        //            child: Container(
-        //                height: 45,
-        //                width: double.infinity,
-        //                decoration: BoxDecoration(
-        //                    color: kdeepblue,
-        //                    borderRadius: BorderRadius.circular(15)
-        //                ),
-        //                child: Center(child: Text("Save",style: TextStyle(fontSize: 15,color: Colors.white),))
-        //            ),
-        //          ),
-        //        ),
-        //
-        //
-        //
-        //      ],
-        //    ),
-        //  ),
-        // ), temproraryly commented
-        body:GetBuilder(
-          init: AuthController(),
+        body: GetBuilder<AuthController>(
           builder: (controller) {
             return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Sign up with "),
-                      Text(''),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Center(
-                    child: GestureDetector(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    GestureDetector(
                       onTap: () {
-                        // Show options to pick from gallery or camera
                         showModalBottomSheet(
                           context: context,
                           builder: (_) => Column(
@@ -209,7 +133,7 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
                                 title: const Text("Take Photo"),
                                 onTap: () {
                                   _pickImage(ImageSource.camera);
-                                  Get.back(); // Close the bottom sheet
+                                  Get.back();
                                 },
                               ),
                               ListTile(
@@ -217,143 +141,204 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
                                 title: const Text("Choose from Gallery"),
                                 onTap: () {
                                   _pickImage(ImageSource.gallery);
-                                  Get.back(); // Close the bottom sheet
+                                  Get.back();
                                 },
                               ),
                             ],
                           ),
                         );
                       },
-
                       child: CircleAvatar(
                         radius: 100,
                         backgroundColor: Colors.tealAccent,
                         backgroundImage:
-                        _pickedImage != null ? FileImage(_pickedImage!) : null,
-                        child: _pickedImage == null
+                        imageUrl != null ? NetworkImage(imageUrl!) : null,
+                        child: imageUrl == null
                             ? const Icon(Icons.person, color: Colors.white, size: 100)
-                            : null, // Show default icon if no image is picked
+                            : null,
                       ),
                     ),
-                  ),
-
-
-                  SizedBox(height: 20,),
-                  // Center(child: Icon(Icons.person_pin,color: Colors.tealAccent,size: 200,),
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                    child: Container(
-                      height: 45,
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: TextFormField(
-
+                        controller: nameController,
                         decoration: InputDecoration(
-
-                          labelText:"Enter Name",
-                          labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-
+                          labelText: "Enter Name",
+                          labelStyle: TextStyle(color: kdeepblue, fontSize: 15),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: kdeepblue),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: kdeepblue),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
-                          ),
-
                         ),
-                        // obscureText: securetext,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                    child: Container(
-                      height: 45,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: TextFormField(
-
+                        controller: emailController,
                         decoration: InputDecoration(
-
-                          labelText:"Email Address",
-                          labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-
+                          labelText: "Email Address",
+                          labelStyle: TextStyle(color: kdeepblue, fontSize: 15),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: kdeepblue),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: kdeepblue),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
-                          ),
-
                         ),
-                        // obscureText: securetext,
+                        readOnly: emailController.text.isNotEmpty,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                    child: Container(
-                      height: 45,
-                      child: TextFormField(
-
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: DropdownButtonFormField<String>(
+                        value: selectedState,
+                        items: states.map((state) {
+                          return DropdownMenuItem<String>(
+                            value: state,
+                            child: Text(state),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedState = value!;
+                            selectedCity = cities[selectedState]!.first;
+                          });
+                        },
                         decoration: InputDecoration(
-
-                          labelText:"Select State",
-                          labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
-
+                          labelText: "Select State",
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: kdeepblue)
-                          ),
-
                         ),
-                        // obscureText: securetext,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select your state';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  SizedBox(height: Get.height*0.2,),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                    child: GestureDetector(
-                      onTap: (){
-                        Get.to(Homescreenone(),);
-                      },
-                      child: Container(
-                        height: 45,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: DropdownButtonFormField<String>(
+                        value: selectedCity,
+                        items: cities[selectedState]!.map((city) {
+                          return DropdownMenuItem<String>(
+                            value: city,
+                            child: Text(city),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCity = value!;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: "Select City",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select your city';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: TextFormField(
+                        initialValue: "India",
+                        enabled: false, // Country is defaulted to India and cannot be changed
+                        decoration: InputDecoration(
+                          labelText: "Country",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            // Show loading indicator while saving
+                            setState(() {
+                              loading = true;
+                            });
+
+                            var newUserModel = UserModel(
+                              userId:controller.userData!.userId.toString(),
+                              fullName: nameController.text.toString(),
+                              email:controller.userData!.email.toString(),
+                              state: selectedState,
+                              photoUrl: imageUrl,
+                              city: selectedCity,
+                            );
+
+                            // Call saveUserData function from your AuthController
+                            await authController.updateAccount(
+                              newUserModel
+                            );
+
+                            // After saving, navigate to the next screen
+                            setState(() {
+                              loading = false;
+                            });
+
+                            // Navigate to home screen if save is successful
+                            Get.to(() => Homescreenone());
+                          }
+                        },
+                        child: Container(
+                          height: 45,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
                             color: kdeepblue,
-                            borderRadius: BorderRadius.circular(15)
-                        ),
-                        child: Center(child: Text("Continue",style: TextStyle(fontSize: 15,color: Colors.white),
-                        ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Center(
+                            child: loading
+                                ? CircularProgressIndicator(color: Colors.white)
+                                : const Text(
+                              "Save & Continue",
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+
+                  ],
+                ),
               ),
             );
-          }
+          },
         ),
-
       ),
     );
   }
