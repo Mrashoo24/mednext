@@ -13,6 +13,7 @@ import 'package:mednextnew/constants/global.dart';
 import '../constants/colors.dart';
 import 'Createwithemail.dart';
 import 'mobilelogin.dart';
+import 'newpassword.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({Key? key}) : super(key: key);
@@ -81,7 +82,8 @@ class _LoginpageState extends State<Loginpage> {
                             borderSide: BorderSide(color: kdeepblue)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: kdeepblue)),
+                            borderSide: BorderSide(color: kdeepblue),
+                        ),
                         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       ),
                     ),
@@ -116,7 +118,8 @@ class _LoginpageState extends State<Loginpage> {
                             borderSide: BorderSide(color: kdeepblue)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: kdeepblue),),
+                            borderSide: BorderSide(color: kdeepblue),
+                        ),
                         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -168,6 +171,9 @@ class _LoginpageState extends State<Loginpage> {
                   }
                 ),
                 GestureDetector(
+                  onTap: (){
+                    Get.to(Setnewpassword());
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 14),
                     child: Text(

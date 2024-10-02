@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 
 import '../constants/colors.dart';
+import '../constants/global.dart';
 
 class Setnewpassword extends StatefulWidget {
   const Setnewpassword({Key? key}) : super(key: key);
@@ -16,6 +21,45 @@ class _SetnewpasswordState extends State<Setnewpassword> {
   final _formkey = GlobalKey<FormState>();
   var newpassWordcontroller = TextEditingController();
   var passWordController = TextEditingController();
+  var confirmPasswordController =TextEditingController();
+  bool loading = false;
+
+  Future<void> changePassword() async {
+    if (_formkey.currentState!.validate()) {
+      setState(() {
+        loading = true;
+      });
+
+      try {
+        // Get the currently logged-in user
+        User? user = FirebaseAuth.instance.currentUser;
+
+        if (user != null) {
+          // Change password
+          await user.updatePassword(newpassWordcontroller.text.trim());
+          Get.snackbar('Success', 'Password updated successfully!',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white);
+        } else {
+          Get.snackbar('Error', 'User not logged in',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.red,
+              colorText: Colors.white);
+        }
+      } catch (e) {
+        Get.snackbar('Error', 'An error occurred: $e',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      } finally {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,7 +78,7 @@ class _SetnewpasswordState extends State<Setnewpassword> {
               Padding(
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
                 child: Container(
-                  height: 45,
+
                   child: TextFormField(
                     controller: newpassWordcontroller,
 
@@ -65,6 +109,8 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide(color: kdeepblue)
                       ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+
                       suffixIcon: IconButton(
                         icon:Icon( securetext? Icons.visibility_off: Icons.visibility,color: kdeepblue, ),
                         onPressed: (){
@@ -82,7 +128,7 @@ class _SetnewpasswordState extends State<Setnewpassword> {
               Padding(
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
                 child: Container(
-                  height: 45,
+
                   child: TextFormField(
                     controller: passWordController,
 
@@ -113,6 +159,8 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide(color: kdeepblue)
                       ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+
                       suffixIcon: IconButton(
                         icon:Icon( securetext? Icons.visibility_off: Icons.visibility,color: kdeepblue, ),
                         onPressed: (){
@@ -127,28 +175,35 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                   ),
                 ),
               ),
+
+
               Padding(
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
                 child: GestureDetector(
-                  onTap: (){
-                    if(_formkey.currentState!.validate()
-                    ){
-                      return;
-                    }else{
-
-
-                      print("Enter valid Email");
+                  onTap: () {
+                    if (_formkey.currentState!.validate()) {
+                      authController.changePassword(
+                        _formkey,
+                        newpassWordcontroller.text.trim(),
+                        confirmPasswordController.text.trim(),
+                      );
+                    } else {
+                      print("Invalid password");
                     }
-                    //Get.to();
                   },
                   child: Container(
+
+
                       height: 45,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: kdeepblue,
                           borderRadius: BorderRadius.circular(15)
                       ),
-                      child: Center(child: Text("Continue",style: TextStyle(fontSize: 15,color: Colors.white),))
+                      child: Center(child
+                          : Text("Continue",style: TextStyle(fontSize: 15,color: Colors.white),
+                      ),
+                      ),
                   ),
                 ),
               ),

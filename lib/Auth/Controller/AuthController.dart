@@ -158,4 +158,64 @@ class AuthController extends GetxController {
       Get.offAll(() => SplashTwo());
     }
   }
+
+  // Function to handle logout
+  Future<void> logout() async {
+    loading = true;
+    update();
+    try {
+      // Sign out from Firebase Authentication
+      await auth.signOut();
+
+      // Clear user data from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+
+      userData = null;
+      update();
+
+      // Redirect to Splash or Login Screen after logout
+      Get.offAll(() => SplashTwo());
+
+      loading = false;
+    } catch (e) {
+      loading = false;
+      update();
+      Get.snackbar('Error', 'Logout failed: $e', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
+// Add this method inside the AuthController class
+  Future<void> changePassword(GlobalKey<FormState> formKey, String newPassword, String confirmPassword) async {
+    if (formKey.currentState!.validate()) {
+      if (newPassword != confirmPassword) {
+        Get.snackbar('Error', 'Passwords do not match.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+        return;
+      }
+      loading = true;
+      update();
+      try {
+        User? user = auth.currentUser;
+        if (user != null) {
+          // Update the password
+          await user.updatePassword(newPassword);
+          loading = false;
+          update();
+
+          Get.snackbar('Success', 'Password updated successfully!', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
+          Get.offAll(() => SelectyourCourse());
+        } else {
+          loading = false;
+          update();
+          Get.snackbar('Error', 'User not logged in.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+        }
+      } catch (e) {
+        loading = false;
+        update();
+        Get.snackbar('Error', 'An error occurred: $e', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    }
+  }
+
+
 }
