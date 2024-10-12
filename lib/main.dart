@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'Adddetails/adddetails.dart';
+import 'Admin/AdminPannel.dart';
+import 'Admin/adminlogin.dart';
 import 'Auth/loginscreen.dart';
 import 'Auth/newpassword.dart';
 import 'Auth/splach2.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home:  Splashscreen(),
+      home:  AdminLoginPage(),
     );
   }
 }
