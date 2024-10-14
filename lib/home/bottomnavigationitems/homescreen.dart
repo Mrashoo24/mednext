@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:mednextnew/Auth/loginscreen.dart';
 import 'package:mednextnew/constants/colors.dart';
+import 'package:mednextnew/home/bottomnavigationitems/me_page.dart';
+import 'package:mednextnew/home/bottomnavigationitems/q_bank.dart';
+import 'package:mednextnew/home/bottomnavigationitems/video_page.dart';
 
-import '../Adddetails/adddetails.dart';
-import '../Auth/Controller/AuthController.dart';
-import '../constants/global.dart';
-import 'notificationscreen.dart';
+import '../../Adddetails/adddetails.dart';
+import '../../Auth/Controller/AuthController.dart';
+import '../../constants/global.dart';
+import '../notificationscreen.dart';
 
 class Homescreenone extends StatefulWidget {
   const Homescreenone({Key? key}) : super(key: key);
@@ -18,6 +21,13 @@ class Homescreenone extends StatefulWidget {
 }
 
 class _HomescreenoneState extends State<Homescreenone> {
+    int index =0;
+    List<Widget> widgetList =  [
+    //  Homescreenone(),
+      VideoPage(),
+      Qbank(),
+      MePage(),
+    ];
   @override
   void intiState() {
     super.initState();
@@ -43,9 +53,14 @@ class _HomescreenoneState extends State<Homescreenone> {
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
+             // currentIndex: 1,
               onTap: (index){
+                setState(() {
+                  index = index;
+                });
 
-              },
+                },
+              currentIndex: index,
               items: [
               BottomNavigationBarItem(icon: Icon(Icons.home,color: kdeepblue,),
                 label: 'Home',

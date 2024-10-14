@@ -9,7 +9,7 @@ import 'package:mednextnew/data/models/usermodel.dart';
 
 import '../Auth/Controller/AuthController.dart';
 import '../constants/colors.dart';
-import '../home/homescreen.dart';
+import '../home/bottomnavigationitems/homescreen.dart';
 
 class AddMoreDetails extends StatefulWidget {
   const AddMoreDetails({Key? key}) : super(key: key);

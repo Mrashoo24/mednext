@@ -11,7 +11,7 @@ import 'Auth/splach2.dart';
 import 'Auth/splash.dart';
 import 'Medicalcoursechoice/courseselect.dart';
 import 'firebase_options.dart';
-import 'home/homescreen.dart';
+import 'home/bottomnavigationitems/homescreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home:  AdminLoginPage(),
+      home:  Splashscreen(),
     );
   }
 }
