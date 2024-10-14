@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Adminpannel extends StatefulWidget {
   const Adminpannel({Key? key}) : super(key: key);
@@ -64,284 +65,292 @@ class _AdminpannelState extends State<Adminpannel> {
                 ),
               ],
             ),
-            Container(
-              width: 250,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
                 children: [
-                  Text(
-                    '2',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'FMGE',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 10), // Adds space between the texts
-                  Text(
-                    'FMGE',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white70,
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'Medical PG',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'Residency Psychiatry',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'Residency ENT',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'Residency OBS-GYN',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'Residency Radiology',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 10), // Adds space between the texts
+                        Text(
+                          'SS Medicine',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 10), // Adds space between the texts
+                        Text(
+                          'SS Surgery',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '2',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 10), // Adds space between the texts
+                        Text(
+                          'SS Pediatrics',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 ],
               ),
             ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Medical PG',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Residency Psychiatry',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Residency ENT',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Residency OBS-GYN',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Residency Radiology',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'SS Medicine',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'SS Surgery',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'SS Pediatrics',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
+                SizedBox(width: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -351,162 +360,141 @@ class _AdminpannelState extends State<Adminpannel> {
                     ),
                   ],
                 ),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
 
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Test 1',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
 
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '2',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 10), // Adds space between the texts
+                            Text(
+                              'Test 1',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Test 2',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                      SizedBox(width: 20,),
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
 
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '2',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 10), // Adds space between the texts
+                            Text(
+                              'Test 2',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Test 3',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                      SizedBox(width: 20,),
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
 
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.redAccent,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '2',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 10), // Adds space between the texts
+                            Text(
+                              'Test 3',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Test 4',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: 250,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                      SizedBox(width: 20,),
+                      Container(
+                        width: 250,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
 
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '2',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 10), // Adds space between the texts
+                            Text(
+                              'Test 4',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10), // Adds space between the texts
-                      Text(
-                        'Test 5',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                      ),
-                      SizedBox(height: 20),
+                      SizedBox(width: 20,),
 
                     ],
                   ),
                 ),
+
+
               ],
             ),
           ),
