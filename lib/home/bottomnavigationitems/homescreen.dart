@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:mednextnew/Auth/loginscreen.dart';
@@ -12,6 +15,7 @@ import '../../Adddetails/adddetails.dart';
 import '../../Auth/Controller/AuthController.dart';
 import '../../constants/global.dart';
 import '../notificationscreen.dart';
+
 
 class Homescreenone extends StatefulWidget {
   const Homescreenone({Key? key}) : super(key: key);
@@ -110,12 +114,96 @@ class _HomescreenoneState extends State<Homescreenone> {
                     ),
                       ),
                SizedBox(height: 10,),
-                       Image.asset("asset/username.png"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('Good Morning Parul!',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Define your button action here
+                          setState(() {
+
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min, // Ensures the button is as wide as its content
+                          children: [
+                            Text(
+                              'Psychology',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(width: 8), // Space between text and icon
+                            Icon(Icons.keyboard_arrow_down),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+
+                  Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    margin: EdgeInsets.all(16.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipRRect(
+                          ),
+                          SizedBox(height: 10),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    'Dr Soumen Manna ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text('Rating ')
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text('Homeostasis',style: TextStyle(fontWeight:FontWeight.bold),),
+                                  SizedBox(
+
+                                    width: 120,
+                                  ),
+                                  Text('4.5'),
+                                 SizedBox(width: 20),
+                                  Icon(Icons.star,color: Colors.red,)
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+
+
+
+
+
+
+
                   SizedBox(height: 15,),
                   Image.asset("asset/videpbanner.png"),
                     SizedBox(height: 10,),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
