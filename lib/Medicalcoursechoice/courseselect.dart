@@ -28,7 +28,9 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
   }
 
   Widget _buildListPanel(CategoryController controller){
-    return ExpansionPanelList(
+    return ExpansionPanelList.radio(
+      expandedHeaderPadding: EdgeInsets.symmetric(vertical: 0),
+
       expansionCallback: (int index, bool isExpanded){
         // setState(() {
           controller.categories[index]. isExpanded =  !controller.categories[index].isExpanded! ;
@@ -37,13 +39,14 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
         // );
       },
       children: controller.categories.map<ExpansionPanel>((CategoryModel item ){
-        return ExpansionPanel(
+        return ExpansionPanelRadio(
           headerBuilder: (BuildContext context,bool isExpanded){
 
 
 
             return ListTile(
-              title: Text(item.name),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20),
+              title: Text(item.name,style: TextStyle(fontSize: 14),),
             );
           },
           body: ListView.builder(
@@ -54,15 +57,56 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
 
               var course = controller.courses.where((element) => element.categoryid == item.id).toList()[index];
 
-              return ListTile(
-                 title: Text(course.name),
-                subtitle: Text(course.name),
-                //trailing: Icon(Icons.dangerous),
-                // onTap: (){},
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding:EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                        child: Text(course.name,style: TextStyle(fontSize: 12),),
+                      ),
+                      Padding(
+                        padding:EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                        child: Radio(value: course.id, groupValue: controller.selectedCourseId,
+                            activeColor: Colors.black,
+                            onChanged: (value){
+                          controller.selectedCourseId = value ?? "";
+                          controller.update();
+                        }),
+                      )
+                    ],
+                  ),
+                  if(course.id == controller.selectedCourseId)   Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(course.questionTitle,style: TextStyle(color: klightGrey,fontSize: 10,fontWeight: FontWeight.w500),),
+                        Column(
+                          children:course.questionOptions.map((e) {
+                            return Row(
+                              children: [
+
+                                Radio(value: e, groupValue: controller.selectedQQuestionId,
+                                    activeColor: Colors.black,
+                                    onChanged: (value){
+                                      controller.selectedQQuestionId = value ?? "";
+                                      controller.update();
+                                    }),
+                                Text(e,style: TextStyle(fontSize: 12),),
+                              ],
+                            );
+                          }).toList()
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               );
             }
           ),
-          isExpanded: item.isExpanded!
+          value: item.id
 
         );
 
@@ -83,28 +127,27 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
                centerTitle: true,
                 automaticallyImplyLeading: true,
               ),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: (){
+                    Get.to( AddMoreDetails());
+                  },
+                  child: Container(
+                      height: 45,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: kdeepblue,
+                          borderRadius: BorderRadius.circular(15)
+                      ),
+                      child: Center(child: Text("Save",style: TextStyle(fontSize: 15,color: Colors.white),))
+                  ),
+                ),
+              ),
               body: controller.loading ? Center(child: CircularProgressIndicator(),) :SingleChildScrollView(
                 child: Column(
                   children: [
                     _buildListPanel( controller),
-                    SizedBox(height: Get.height * 0.5,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: (){
-                         Get.to( AddMoreDetails());
-                        },
-                        child: Container(
-                            height: 45,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: kdeepblue,
-                                borderRadius: BorderRadius.circular(15)
-                            ),
-                            child: Center(child: Text("Save",style: TextStyle(fontSize: 15,color: Colors.white),))
-                        ),
-                      ),
-                    ),
                   ],
                 ),
 
@@ -131,7 +174,7 @@ List<Item> generateItems(int numberOfItems){
 
 
 
-      
+
     );
   }
   );

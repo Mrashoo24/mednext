@@ -21,44 +21,8 @@ class _SetnewpasswordState extends State<Setnewpassword> {
   final _formkey = GlobalKey<FormState>();
   var newpassWordcontroller = TextEditingController();
   var passWordController = TextEditingController();
-  var confirmPasswordController =TextEditingController();
+  var emailController =TextEditingController();
   bool loading = false;
-
-  Future<void> changePassword() async {
-    if (_formkey.currentState!.validate()) {
-      setState(() {
-        loading = true;
-      });
-
-      try {
-        // Get the currently logged-in user
-        User? user = FirebaseAuth.instance.currentUser;
-
-        if (user != null) {
-          // Change password
-          await user.updatePassword(newpassWordcontroller.text.trim());
-          Get.snackbar('Success', 'Password updated successfully!',
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.green,
-              colorText: Colors.white);
-        } else {
-          Get.snackbar('Error', 'User not logged in',
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.red,
-              colorText: Colors.white);
-        }
-      } catch (e) {
-        Get.snackbar('Error', 'An error occurred: $e',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white);
-      } finally {
-        setState(() {
-          loading = false;
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +39,45 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                     ),
                   ),
                 ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
+                child: Container(
+
+                  child: TextFormField(
+                    controller: emailController,
+
+                    validator: (value){
+                      if(value == null || value.isEmpty)
+                      {
+                        return "This field is required";
+                      }
+                      if(!value.isEmail){
+                        return "Email not correct";
+                      }
+                    },
+
+                    decoration: InputDecoration(
+                      //  errorStyle: ,
+                      labelText:"Email",
+                      labelStyle: TextStyle(color:kdeepblue,fontSize: 15),
+
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: kdeepblue)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: kdeepblue)
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: kdeepblue)
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
                 child: Container(
@@ -140,6 +143,9 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                       if(value.length<6){
                         return "The required length is minium 6 ";
                       }
+                      if(value != newpassWordcontroller.text){
+                        return "Password not matching";
+                      }
                     },
 
                     decoration: InputDecoration(
@@ -185,7 +191,7 @@ class _SetnewpasswordState extends State<Setnewpassword> {
                       authController.changePassword(
                         _formkey,
                         newpassWordcontroller.text.trim(),
-                        confirmPasswordController.text.trim(),
+                        emailController.text.trim(),
                       );
                     } else {
                       print("Invalid password");

@@ -20,6 +20,11 @@ class CategoryController extends GetxController {
   var loading = false;
   var courseloading = false;
 
+  var selectedCourseId = "";
+  var selectedQQuestionId = "";
+
+
+
   @override
   void onInit() {
     super.onInit();

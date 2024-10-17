@@ -123,7 +123,7 @@ class AuthController extends GetxController {
     update();
   }
 
-  // Load user data from SharedPreferences
+  // Load user data from SharedPrefere
   Future<UserModel?> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('userId');
@@ -186,12 +186,8 @@ class AuthController extends GetxController {
   }
 
 // Add this method inside the AuthController class
-  Future<void> changePassword(GlobalKey<FormState> formKey, String newPassword, String confirmPassword) async {
+  Future<void> changePassword(GlobalKey<FormState> formKey, String newPassword, String email) async {
     if (formKey.currentState!.validate()) {
-      if (newPassword != confirmPassword) {
-        Get.snackbar('Error', 'Passwords do not match.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
-        return;
-      }
       loading = true;
       update();
       try {
@@ -205,10 +201,12 @@ class AuthController extends GetxController {
           Get.snackbar('Success', 'Password updated successfully!', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
           Get.offAll(() => SelectyourCourse());
         } else {
+          await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
           loading = false;
           update();
-          Get.snackbar('Error', 'User not logged in.', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+          Get.snackbar('Success', 'Email has been sent to your email for resetting password', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
         }
+        Get.back();
       } catch (e) {
         loading = false;
         update();
