@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mednextnew/Adddetails/adddetails.dart';
+import 'package:mednextnew/home/bottomnavigationitems/homescreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Medicalcoursechoice/courseselect.dart';
@@ -54,7 +57,8 @@ class AuthController extends GetxController {
   }
 
 
-  Future<void> updateAccount(UserModel userModel) async {
+  Future<void> updateAccount(UserModel userModel,
+      {void Function()? onComplete, void Function()? onFailed}) async {
       loading = true;
       update();
       try {
@@ -66,10 +70,12 @@ class AuthController extends GetxController {
         await saveUserData(userModel);
         Get.snackbar('Success',"User Details Updated", snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
         loading = false;
+        if(onComplete != null)onComplete();
       } catch (e) {
         loading = false;
         update();
         Get.snackbar('Error', 'An error occurred: $e', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+        if(onFailed != null)onFailed();
       }
 
   }
@@ -94,7 +100,8 @@ class AuthController extends GetxController {
         if (userDoc.exists) {
           UserModel userModel = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
           await saveUserData(userModel);
-          Get.offAll(() => SelectyourCourse());
+
+          formNavigationAsPerUser(userModel);
         } else {
           loading = false;
           update();
@@ -116,6 +123,8 @@ class AuthController extends GetxController {
     await prefs.setString('email', user.email ?? '');
     await prefs.setString('state', user.state ?? '');
     await prefs.setString('city', user.city ?? '');
+    await prefs.setString('registeredCourses', jsonEncode(user.registeredCourses) ?? '');
+
     if (user.photoUrl != null) {
       await prefs.setString('photoUrl', user.photoUrl!);
     }
@@ -132,6 +141,9 @@ class AuthController extends GetxController {
     String? state = prefs.getString('state');
     String? city = prefs.getString('city');
     String? photoUrl = prefs.getString('photoUrl');
+    String? registeredCourses = prefs.getString('registeredCourses');
+
+    var newregisteredCourses = List<Map<String,dynamic>>.from(jsonDecode(registeredCourses ?? "[]").map((e) => e).toList()) ;
 
     if (userId != null && fullName != null && email != null) {
       var user = UserModel(
@@ -141,6 +153,7 @@ class AuthController extends GetxController {
         state: state,
         city: city,
         photoUrl: photoUrl,
+        registeredCourses: newregisteredCourses
       );
       userData = user;
       update();
@@ -153,9 +166,22 @@ class AuthController extends GetxController {
   Future<void> checkUserLoggedIn() async {
     UserModel? user = await loadUserData();
     if (user != null) {
-      Get.offAll(() => SelectyourCourse());
+      formNavigationAsPerUser(user);
+
+
     } else {
       Get.offAll(() => SplashTwo());
+    }
+  }
+
+  void formNavigationAsPerUser(UserModel user) {
+    if(user.registeredCourses?.isEmpty ?? true){
+      Get.offAll(() => SelectyourCourse());
+    }
+    else if(((user.state?.isEmpty ?? true) &&  (user.state?.isEmpty ?? true) && (user.city?.isEmpty ?? true) && (user.photoUrl?.isEmpty ?? true))){
+      Get.offAll(() => AddMoreDetails());
+    }else{
+      Get.offAll(() => Homescreenone());
     }
   }
 
@@ -199,7 +225,7 @@ class AuthController extends GetxController {
           update();
 
           Get.snackbar('Success', 'Password updated successfully!', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
-          Get.offAll(() => SelectyourCourse());
+          // Get.offAll(() => SelectyourCourse());
         } else {
           await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
           loading = false;

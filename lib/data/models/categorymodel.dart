@@ -12,6 +12,13 @@ class CategoryModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+
   // Copy with method
   CategoryModel copyWith({String? id, String? name}) {
     return CategoryModel(

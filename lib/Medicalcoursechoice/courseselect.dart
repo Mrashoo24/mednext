@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mednextnew/Auth/Controller/categoryController.dart';
 
 import '../Adddetails/adddetails.dart';
+import '../Auth/Controller/AuthController.dart';
 import '../constants/colors.dart';
 import '../data/models/categorymodel.dart';
 
@@ -18,12 +19,14 @@ class SelectyourCourse extends StatefulWidget {
 class _SelectyourCourseState extends State<SelectyourCourse> {
 
   CategoryController controller = Get.put(CategoryController());
+  AuthController authController = Get.put(AuthController());
 
  @override
   void initState() {
-
-   controller.getCategories();
-   controller.getCourse();
+   controller. loadCachedData();
+   // controller.getCategories();
+   // controller.getCourse();
+   // controller.getSubjects();
    super.initState();
   }
 
@@ -130,8 +133,24 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
               bottomNavigationBar: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
-                  onTap: (){
-                    Get.to( AddMoreDetails());
+                  onTap: () async {
+                    // Call saveUserData function from your AuthController
+                    controller.loading = true;
+                    controller.update();
+                    await authController.updateAccount(
+                        authController.userData!.copyWith(registeredCourses: [
+                          {"course":controller.selectedCourseId,"year":controller.selectedQQuestionId},...authController.userData?.registeredCourses??[]])
+                    ,onComplete: (){
+                      controller.loading = false;
+                      controller.update();
+                      Get.to( AddMoreDetails());
+                    },
+                      onFailed: (){
+                        controller.loading = false;
+                        controller.update();
+                      },
+                    );
+
                   },
                   child: Container(
                       height: 45,

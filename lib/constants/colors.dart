@@ -5,3 +5,5 @@ var kblack = Color(0xFF293032);
 var kdarkgrey = Color(0xFFACAEAF);
 var klightblue = Color(0xFFF4F3FD);
 var klightGrey = Color(0xFF979797);
+var kpurple = Color(0xFF4B57B2);
+var kyellow = Color(0xFFFFB800);

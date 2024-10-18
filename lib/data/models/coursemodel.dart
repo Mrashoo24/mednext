@@ -19,7 +19,15 @@ class CourseModel {
 
     );
   }
-
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'categoryid': categoryid,
+      'questionOptions': questionOptions,
+      'questionTitle': questionTitle,
+    };
+  }
   // Copy with method
   CourseModel copyWith({String? id, String? name}) {
     return CourseModel(

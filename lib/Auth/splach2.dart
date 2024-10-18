@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../Medicalcoursechoice/courseselect.dart';
 import '../constants/colors.dart';
 import 'loginscreen.dart';
+import 'Createwithemail.dart';
 
 class SplashTwo extends StatefulWidget {
   const SplashTwo({Key? key}) : super(key: key);
@@ -48,7 +49,8 @@ class _SplashTwoState extends State<SplashTwo> {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: (){
-                    Get.to(SelectyourCourse());
+                    Get.to(Createwithemail());
+
                   },
                   child: Container(
                       height: 45,

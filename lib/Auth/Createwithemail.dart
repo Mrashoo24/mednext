@@ -226,21 +226,6 @@ class _CreatewithemailState extends State<Createwithemail> {
                     ),
                   ),
                   SizedBox(height: Get.height*0.2,),
-
-                  GestureDetector(
-                    onTap: (){
-                        Get.to(Mobileloginpage());
-
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Continue with with phone number',style: TextStyle(fontSize: 15,color: kblack,),
-                        ),
-                        Icon(Icons.chevron_right_sharp,color: kblack,)
-                      ],
-                    ),
-                  ),
                 ],
               ),
             );

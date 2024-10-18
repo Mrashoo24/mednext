@@ -291,10 +291,10 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
                               loading = true;
                             });
 
-                            var newUserModel = UserModel(
-                              userId:controller.userData!.userId.toString(),
+                            var newUserModel = controller.userData!.copyWith(
+                              // userId:controller.userData!.userId.toString(),
                               fullName: nameController.text.toString(),
-                              email:controller.userData!.email.toString(),
+                              // email:controller.userData!.email.toString(),
                               state: selectedState,
                               photoUrl: imageUrl,
                               city: selectedCity,
