@@ -11,6 +11,7 @@ import 'package:mednextnew/constants/colors.dart';
 import 'package:mednextnew/constants/firebaseRemotConfig.dart';
 import 'package:mednextnew/home/bottomnavigationitems/me_page.dart';
 import 'package:mednextnew/home/bottomnavigationitems/q_bank.dart';
+import 'package:mednextnew/home/bottomnavigationitems/test_page.dart';
 import 'package:mednextnew/home/bottomnavigationitems/video_page.dart';
 import 'package:mednextnew/home/homeWidgets/homePageWidget.dart';
 import 'package:mednextnew/home/homeWidgets/recommendedVideos.dart';
@@ -34,6 +35,7 @@ class _HomescreenoneState extends State<Homescreenone> {
     HomescreenWidget(),
     VideoPage(),
     Qbank(),
+    TestPage(),
     MePage(),
   ];
 
@@ -70,6 +72,8 @@ class _HomescreenoneState extends State<Homescreenone> {
               ),
               bottomNavigationBar: BottomNavigationBar(
                 // currentIndex: 1,
+                unselectedItemColor: klightGrey, // Color for unselected items
+                selectedItemColor: kdeepblue,
                 onTap: (index) {
                   setState(() {
                     selectedindex = index;
@@ -87,28 +91,28 @@ class _HomescreenoneState extends State<Homescreenone> {
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.play_arrow_outlined,
-                      color: kdeepblue,
+
                     ),
                     label: 'Video',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.pending_actions_sharp,
-                      color: kdeepblue,
+
                     ),
                     label: 'Qbank',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.label,
-                      color: kdeepblue,
+
                     ),
                     label: 'Test',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.person,
-                      color: kdeepblue,
+
                     ),
                     label: 'Me',
                   )

@@ -13,7 +13,7 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return const  SafeArea(
       child: Scaffold(
-
+        backgroundColor: Colors.black,
       ),
     );
   }

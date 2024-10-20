@@ -13,7 +13,7 @@ class _QbankState extends State<Qbank> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-
+        backgroundColor: Colors.blue,
       ),
     );
   }

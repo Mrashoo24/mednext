@@ -16,7 +16,7 @@ class _AdminpannelState extends State<Adminpannel> {
         child:Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Medical PG",
+            title: Text("Admin Pannel",
             ),
             actions: [
 
