@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:mednextnew/Auth/Controller/AuthController.dart';
 import 'package:mednextnew/Auth/Controller/categoryController.dart';
+import 'package:mednextnew/Auth/Controller/videoController.dart';
+import 'package:mednextnew/constants/global.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
+import 'package:mednextnew/data/models/videoModel.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../constants/colors.dart';
 
@@ -17,151 +22,195 @@ class RecommendedVideos extends StatefulWidget {
 
 class _RecommendedVideosState extends State<RecommendedVideos> {
 
-  var controller = Get.put(CategoryController());
-
-  SubjectModel? selectedSubject ;
-
+  SubjectModel? selectedSubject;
 
   @override
   void initState() {
-  selectedSubject = (controller.subjects.first);
+    if (!(categoryController.categories.isEmpty ||
+        categoryController.courses.isEmpty ||
+        categoryController.subjects.isEmpty)) {
+      selectedSubject = (categoryController.subjects.first);
+      videoController.loadCachedData();
+    }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CategoryController>(
-      init: controller,
+      init: categoryController,
       builder: (controller) {
-
-        return Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'Good Morning Parul!',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _openSubjectSelectionSheet(controller.subjects);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: kdeepblue.withOpacity(0.12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7)
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 2),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize
-                        .min, // Ensures the button is as wide as its content
-                    children: [
-                      Text(
-                        selectedSubject?.subjectName ?? (controller.subjects.first.subjectName ?? ""),
-                        style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: kblack),
-                      ),
-                      SizedBox(width: 8), // Space between text and icon
-                      Icon(Icons.keyboard_arrow_down,color: kblack,),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white, // You might want to set a background color
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2), // Shadow color
-                    blurRadius: 4.0, // How blurry the shadow is
-                    spreadRadius: 0.0, // How much the shadow spreads
-                    offset: Offset(0, 5), // Position of the shadow (x, y)
-                  ),
-                ],
-              ),
-              margin: EdgeInsets.all(16.0),
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        return controller.categories.isEmpty ||
+                controller.courses.isEmpty ||
+                controller.subjects.isEmpty
+            ? _buildShimmerEffect()
+            : Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: 90,
-                          height: 90,
-                          child: ClipRRect(
-                            child: Image.asset(
-                              "asset/Logo med 1.png",
-                              fit: BoxFit.fill,
+                        Flexible(
+                          flex: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Good Morning ${authController.userData?.fullName}!',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              Text(
+                                'Today, let’s discuss on important topic',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 10,
+                                    color: klightGrey),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _openSubjectSelectionSheet(controller.subjects);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: kdeepblue.withOpacity(0.12),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              // Ensures the button is as wide as its content
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  child: Text(
+                                    selectedSubject?.subjectName ??
+                                        (controller
+                                                .subjects.first.subjectName ??
+                                            ""),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: kblack),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                SizedBox(
+                                    width: 8), // Space between text and icon
+                                Flexible(
+                                    flex: 1,
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: kblack,
+                                    )),
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Dr Soumen Manna ',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: kpurple,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Homeostasis',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: kblack,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text("Ratings",style: TextStyle(color: kgrey,fontSize: 12),),
-                                    Row(
-                                      children: [
-                                        Text('4.5',style: TextStyle(fontSize: 12),),
-                                        Icon(
-                                          Icons.star,
-                                          color: kyellow,
-                                          size: 12,
-                                        ),
-                                      ],
-                                    ),
+                      ],
+                    ),
+                  ),
+                  GetBuilder<VideoController>(
+                      builder: (videoController) {
 
-                                  ],
-                                ),
+                        var currentVideo = videoController.getRecommendedVideoForSubject(selectedSubject?.subjectId ?? "").firstOrNull;
+
+                    return videoThumnailCard(currentVideo);
+                  }),
+                ],
+              );
+      },
+    );
+  }
+
+
+
+  Widget _buildShimmerEffect() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        margin: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 90,
+                    height: 90,
+                    color: Colors.grey[300],
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 12,
+                              color: Colors.grey[300],
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              width: 60,
+                              height: 12,
+                              color: Colors.grey[300],
+                            ),
+                          ],
+                        ),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 12,
+                                color: Colors.grey[300],
+                              ),
+                              SizedBox(height: 8),
+                              Container(
+                                width: 30,
+                                height: 12,
+                                color: Colors.grey[300],
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-
-
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -187,10 +236,11 @@ class _RecommendedVideosState extends State<RecommendedVideos> {
               RadioListTile<String>(
                 title: Text(subject.subjectName ?? ""),
                 value: subject.subjectId ?? "",
-                groupValue: selectedSubject?.subjectId ??"",
+                groupValue: selectedSubject?.subjectId ?? "",
                 onChanged: (String? value) {
                   setState(() {
-                    selectedSubject = subjects.firstWhere((element) => (value ?? "") == element.subjectId);
+                    selectedSubject = subjects.firstWhere(
+                        (element) => (value ?? "") == element.subjectId);
                   });
                   Navigator.pop(
                       context); // Close the bottom sheet when selected
@@ -202,5 +252,4 @@ class _RecommendedVideosState extends State<RecommendedVideos> {
       },
     );
   }
-
 }

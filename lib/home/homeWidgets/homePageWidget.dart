@@ -13,6 +13,7 @@ import 'package:mednextnew/home/bottomnavigationitems/me_page.dart';
 import 'package:mednextnew/home/bottomnavigationitems/q_bank.dart';
 import 'package:mednextnew/home/bottomnavigationitems/video_page.dart';
 import 'package:mednextnew/home/homeWidgets/recommendedVideos.dart';
+import 'package:mednextnew/home/homeWidgets/subjectVideoWidget.dart';
 
 import '../../Adddetails/adddetails.dart';
 import '../../Auth/Controller/AuthController.dart';
@@ -45,9 +46,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
           init: authController,
           builder: (controller) {
             return Scaffold(
-              body:
-
-              SingleChildScrollView(
+              body: SingleChildScrollView(
                 child: Column(
                   children: [
                     AutoCarouselWithIndicator(imgList: listOfImage),
@@ -55,97 +54,13 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       height: 10,
                     ),
                     RecommendedVideos(),
+
                     SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "My Subjects",
-                            style: TextStyle(fontSize: 25),
-                          ),
-                          Icon(
-                            Icons.apps,
-                            color: kdeepblue,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: klightblue),
-                            child: Center(child: Text('All Subjects')),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: klightblue),
-                            child: Center(child: Text('Anatomy')),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: klightblue),
-                            child: Center(child: Text('Physiology')),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: klightblue),
-                            child: Center(child: Text('Bio Chemistry')),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: klightblue),
-                            child: Center(child: Text('Micro Biology')),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "View More",
-                      style: TextStyle(color: kdeepblue),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
+
+                    SubjectVideoWidget(),
+
                     Image.asset("asset/recentupdates.png"),
                     SizedBox(
                       height: 10,

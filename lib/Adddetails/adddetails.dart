@@ -311,7 +311,7 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
                             });
 
                             // Navigate to home screen if save is successful
-                            Get.to(() => Homescreenone());
+                            Get.offAll(() => Homescreenone());
                           }
                         },
                         child: Container(

@@ -5,6 +5,8 @@ import 'package:mednextnew/data/models/coursemodel.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/data/models/categorymodel.dart';
 
+import '../../constants/global.dart';
+
 class CategoryController extends GetxController {
   var categories = <CategoryModel>[];
   var courses = <CourseModel>[];
@@ -16,7 +18,6 @@ class CategoryController extends GetxController {
   var selectedCourseId = "";
   var selectedQQuestionId = "";
 
-  final GetStorage box = GetStorage();
 
   @override
   void onInit() {
@@ -73,8 +74,10 @@ class CategoryController extends GetxController {
     //   return; // Skip fetch if data is already cached
     // }
 
-    loading = true;
-    update();
+    if(categories.isEmpty){
+      loading = true;
+      update();
+    }
 
     try {
       // Fetch data from Firestore
@@ -101,9 +104,10 @@ class CategoryController extends GetxController {
     //   return; // Skip fetch if data is already cached
     // }
 
-    courseloading = true;
-    update();
-
+    if(courses.isEmpty){
+      courseloading = true;
+      update();
+    }
     try {
       // Fetch data from Firestore
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('course').get();
@@ -129,9 +133,10 @@ class CategoryController extends GetxController {
     //   return; // Skip fetch if data is already cached
     // }
 
-    courseloading = true;
-    update();
-
+    if(subjects.isEmpty){
+      courseloading = true;
+      update();
+    }
     try {
       // Fetch data from Firestore
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('subjects').get();

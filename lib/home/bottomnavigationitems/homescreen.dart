@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:mednextnew/Auth/Controller/categoryController.dart';
 import 'package:mednextnew/Auth/loginscreen.dart';
 import 'package:mednextnew/constants/carousalWidget.dart';
 import 'package:mednextnew/constants/colors.dart';
@@ -31,6 +32,11 @@ class Homescreenone extends StatefulWidget {
 class _HomescreenoneState extends State<Homescreenone> {
   int selectedindex = 0;
   List<Map<String, dynamic>> listOfImage = [];
+
+  CategoryController categoryController = Get.put(CategoryController());
+
+
+
   List<Widget> widgetList = [
     HomescreenWidget(),
     VideoPage(),
@@ -58,7 +64,7 @@ class _HomescreenoneState extends State<Homescreenone> {
               appBar: AppBar(
                 centerTitle: true,
                 title: Text(
-                  "Medical PG",
+                    categoryController.courses.isEmpty ? "" : categoryController.courses.firstWhere((element) => element.id == (controller.userData?.registeredCourses?.first["course"] ?? "")).name,
                 ),
                 actions: [
                   IconButton(
