@@ -155,4 +155,25 @@ class CategoryController extends GetxController {
       update();
     }
   }
+
+  List<SubjectModel> getSubjectsByCourse()  {
+     if (subjects.isNotEmpty) {
+       return subjects.where((element) {
+         var courseid = element.courseIds!.first.split("/")[0];
+         var year = element.courseIds!.first.split("/")[1];
+
+         var userCourse = authController.userData?.registeredCourses?.first["course"];
+         var userYear = authController.userData?.registeredCourses?.first["year"];
+
+         return courseid == userCourse && userYear == year;
+
+
+       }).toList();
+
+     }else{
+       return [];
+     }
+    
+  }
+
 }

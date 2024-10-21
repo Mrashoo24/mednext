@@ -9,6 +9,7 @@ class SubjectModel {
   int? totalNotes;
   int? totalTestSeries;
   int? totalQuestions;
+  String? logo;
 
   SubjectModel({
     this.subjectId,
@@ -20,7 +21,7 @@ class SubjectModel {
     this.totalVideos,
     this.totalNotes,
     this.totalTestSeries,
-    this.totalQuestions,
+    this.totalQuestions,this.logo
   });
 
   // Factory method to create an instance from Firestore data (JSON)
@@ -29,13 +30,14 @@ class SubjectModel {
       subjectId: json['subjectId'],
       subjectName: json['subjectName'],
       description: json['description'],
-      courseIds: List<String>.from(json['courseIds'] ?? []), // Handle List<String>
+      courseIds: List<String>.from(json['courseId'] ?? []), // Handle List<String>
       teachers: List<String>.from(json['teachers'] ?? []),
       totalStudents: json['totalStudents'] ?? 0,
       totalVideos: json['totalVideos'] ?? 0,
       totalNotes: json['totalNotes'] ?? 0,
       totalTestSeries: json['totalTestSeries'] ?? 0,
       totalQuestions: json['totalQuestions'] ?? 0,
+        logo:json["logo"] ?? ""
     );
   }
 
@@ -45,13 +47,14 @@ class SubjectModel {
       'subjectId': subjectId,
       'subjectName': subjectName,
       'description': description,
-      'courseIds': courseIds ?? [], // Handle List<String>
+      'courseId': courseIds ?? [], // Handle List<String>
       'teachers': teachers ?? [],
       'totalStudents': totalStudents ?? 0,
       'totalVideos': totalVideos ?? 0,
       'totalNotes': totalNotes ?? 0,
       'totalTestSeries': totalTestSeries ?? 0,
       'totalQuestions': totalQuestions ?? 0,
+      'logo' : logo ?? ""
     };
   }
 
@@ -67,6 +70,7 @@ class SubjectModel {
     int? totalNotes,
     int? totalTestSeries,
     int? totalQuestions,
+    String? logo
   }) {
     return SubjectModel(
       subjectId: subjectId ?? this.subjectId,
@@ -79,6 +83,7 @@ class SubjectModel {
       totalNotes: totalNotes ?? this.totalNotes,
       totalTestSeries: totalTestSeries ?? this.totalTestSeries,
       totalQuestions: totalQuestions ?? this.totalQuestions,
+        logo:logo ?? this.logo
     );
   }
 }

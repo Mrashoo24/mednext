@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:mednextnew/Auth/Controller/categoryController.dart';
 import 'package:mednextnew/Auth/Controller/videoController.dart';
@@ -7,6 +8,7 @@ import 'package:mednextnew/constants/global.dart';
 
 import '../../constants/colors.dart';
 import '../../data/models/subjectModel.dart';
+import 'fullSubjectVideo.dart';
 
 class SubjectVideoWidget extends StatefulWidget {
   const SubjectVideoWidget({super.key});
@@ -73,7 +75,7 @@ class _SubjectVideoWidgetState extends State<SubjectVideoWidget> {
                                 });
                               },
                               child: Container(
-                                margin: EdgeInsets.only(right: 10),
+                                margin: EdgeInsets.only(right: 10,left: 10),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 18),
                                 decoration: BoxDecoration(
@@ -139,9 +141,14 @@ class _SubjectVideoWidgetState extends State<SubjectVideoWidget> {
                       height: 20,
                     ),
 
-                    Text(
-                      "View More",
-                      style: TextStyle(color: kdeepblue),
+                    InkWell(
+                      onTap: (){
+                        Get.to(SubjectVideoWidgetFull());
+                      },
+                      child: Text(
+                        "View More",
+                        style: TextStyle(color: kdeepblue),
+                      ),
                     ),
                   ],
                 );

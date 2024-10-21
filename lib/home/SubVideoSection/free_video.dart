@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:mednextnew/Auth/Controller/categoryController.dart';
 import 'package:mednextnew/constants/colors.dart';
+import 'package:mednextnew/constants/global.dart';
+import 'package:mednextnew/data/models/subjectModel.dart';
 
 class FreeVideo extends StatefulWidget {
   const FreeVideo({Key? key}) : super(key: key);
@@ -17,130 +21,67 @@ class _FreeVideoState extends State<FreeVideo> {
   Widget build(BuildContext context) {
     var width0;
     return Scaffold(
-      body: Column(
+      body: GetBuilder<CategoryController>(
+          init: categoryController,
+          builder: (controller) {
+
+            var subjectList = controller.getSubjectsByCourse();
+
+        return  Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, top: 20),
+              child: Row(
+                children: [
+                  Text("Choose Subjects",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: subjectList.length,
+                itemBuilder: (context,index) {
+                  return subjectCard(subjectList[index]);
+                }
+              ),
+            ),
+
+          ],
+        );
+      }),
+    );
+  }
+
+  Padding subjectCard(SubjectModel subjectModel) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20,top: 20),
-            child: Row(
-              children: [
-                Text("Select Subjects",style: TextStyle(fontSize: 25),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            children: [
+              Icon(Icons.heart_broken),
+              SizedBox(width: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(subjectModel.subjectName ?? "",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
 
-              children: [
-                Icon(Icons.heart_broken),
-                SizedBox(width: 20),
-                Column(
-                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("Anatomy",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),
-                    ),
+                  Text("${subjectModel.totalStudents} students Learning", style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 10)),
 
-                    Text("760 students Learning"),
-
-                  ],
-                ),
-                SizedBox(width: Get.width*0.4),
-                Icon(Icons.chevron_right,color: kdarkgrey,size: 40,)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-            //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.heart_broken),
-                SizedBox(width: 20),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("Physiology",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),
-                    ),
-
-                    Text("760 students Learning"),
-
-                  ],
-                ),
-                SizedBox(width: Get.width*0.4),
-                Icon(Icons.chevron_right,color: kdarkgrey,size: 40,)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.heart_broken),
-                SizedBox(width: 20),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("Biochemistry",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),
-                    ),
-
-                    Text("760 students Learning"),
-
-                  ],
-                ),
-                SizedBox(width: Get.width*0.4),
-                Icon(Icons.chevron_right,color: kdarkgrey,size: 40,)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.heart_broken),
-                SizedBox(width: 20),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-
-                    Text("Pathology",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),
-                    ),
-
-                    Text("760 students Learning"),
-
-                  ],
-                ),
-                SizedBox(width: Get.width*0.4),
-                Icon(Icons.chevron_right,color: kdarkgrey,size: 40,)
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-            //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(Icons.heart_broken),
-                SizedBox(width: 20),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("Pharmacology",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 20),
-                    ),
-
-                    Text("760 students Learning"),
-
-                  ],
-                ),
-                SizedBox(width: Get.width*0.4),
-                Icon(Icons.chevron_right,color: kdarkgrey,size: 40,)
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
 
+          Icon(Icons.chevron_right, color: kblack, size: 30,)
         ],
       ),
     );
