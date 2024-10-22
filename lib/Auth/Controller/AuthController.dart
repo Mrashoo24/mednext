@@ -143,7 +143,7 @@ class AuthController extends GetxController {
     String? photoUrl = prefs.getString('photoUrl');
     String? registeredCourses = prefs.getString('registeredCourses');
 
-    var newregisteredCourses = List<Map<String,dynamic>>.from(jsonDecode(registeredCourses ?? "[]").map((e) => e).toList()) ;
+    var newregisteredCourses =  List<String>.from(jsonDecode(registeredCourses ?? "[]").map((e) => e).toList()) ;
 
     if (userId != null && fullName != null && email != null) {
       var user = UserModel(

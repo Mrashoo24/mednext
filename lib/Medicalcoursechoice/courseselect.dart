@@ -139,7 +139,7 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
                     controller.update();
                     await authController.updateAccount(
                         authController.userData!.copyWith(registeredCourses: [
-                          {"course":controller.selectedCourseId,"year":controller.selectedQQuestionId},...authController.userData?.registeredCourses??[]])
+                          "${controller.selectedCourseId}/${controller.selectedQQuestionId}",...authController.userData?.registeredCourses??[]])
                     ,onComplete: (){
                       controller.loading = false;
                       controller.update();

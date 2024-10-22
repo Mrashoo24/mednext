@@ -57,4 +57,17 @@ class RemoteConfigService {
     }
     return [];
   }
+
+  Map<String, dynamic>? getVideoOfTheDay() {
+    final bannerJson = _remoteConfig.getString('videofday');
+    if (bannerJson.isNotEmpty) {
+      try {
+        final bannerMap =   jsonDecode(bannerJson);
+        return bannerMap;
+      } catch (e) {
+        print("Error parsing banner_home JSON: $e");
+      }
+    }
+    return null;
+  }
 }

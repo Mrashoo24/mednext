@@ -134,7 +134,7 @@ class _SubjectVideoWidgetState extends State<SubjectVideoWidget> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
 
-                        return videoThumnailCard(videoList[index],teacherProfilePic: "s");
+                        return videoThumnailCard(videoList[index],teacherProfilePic: true);
                       },
                     ),
                     SizedBox(

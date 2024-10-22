@@ -33,13 +33,17 @@ class HomescreenWidget extends StatefulWidget {
 class _HomescreenWidgetState extends State<HomescreenWidget> {
   int index = 0;
   List<Map<String, dynamic>> listOfImage = [];
+  Map<String, dynamic>? videoOftheday ;
+
   var _currentIndex = 0;
   @override
   void initState() {
     setState(() {
       listOfImage = RemoteConfigService().getHomeBanner();
+      videoOftheday = RemoteConfigService().getVideoOfTheDay();
     });
-    updatesController.getUpdates();
+
+
     super.initState();
   }
 
@@ -81,13 +85,14 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       height: 20,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             "Quick Links",
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
@@ -95,15 +100,26 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                     SizedBox(
                       height: 10,
                     ),
-                    Image.asset("asset/buttons.png"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        buildQuickLinksItems("asset/notes.png", "Notes"),
+                        buildQuickLinksItems("asset/bookmark.png", "Bookmarks"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             "Video of the day",
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
@@ -111,7 +127,8 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                     SizedBox(
                       height: 10,
                     ),
-                    Image.asset("asset/videoofday.png"),
+
+                   if(videoOftheday != null) videoOfTheDayComponent(videoOftheday!["thumbnail"], videoOftheday!["title"], videoOftheday!["subtitle"], videoOftheday!["link"]),
                     SizedBox(
                       height: 10,
                     ),
@@ -121,6 +138,16 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
             );
           }),
     );
+  }
+
+  Column buildQuickLinksItems(String img,String title) {
+    return Column(
+                    children: [
+                      Image.asset(img),
+                      SizedBox(height: 5,),
+                      Text(title,style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),),
+                    ],
+                  );
   }
 
   Column quizComponent() {
@@ -160,62 +187,5 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                   );
   }
 
-  Widget recentUpdateComponent() {
-    return GetBuilder<UpdatesController>(
-        init: updatesController,
-        builder: (controller) {
-      return controller.listOfUpdates.isEmpty ? SizedBox() :Builder(
-        builder: (context) {
-          var recentUpdate = controller.listOfUpdates.first;
-
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-              // You might want to set a background color
-              boxShadow: [
-                BoxShadow(
-                  color:
-                  Colors.black.withOpacity(0.2), // Shadow color
-                  blurRadius: 4.0, // How blurry the shadow is
-                  spreadRadius: 0.0, // How much the shadow spreads
-                  offset:
-                  Offset(0, 5), // Position of the shadow (x, y)
-                ),
-              ],
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Image.asset("asset/alarmicon.png"),
-                  SizedBox(width: 10,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Recent Updates", style: TextStyle(fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: kblack),),
-                      Text("Updated on ${recentUpdate.uploadDate}", style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: kgrey),),
-                    ],
-                  ),
-                  Expanded(
-                    child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Image.asset("asset/rigthArrow.png")),
-                  )
-                ],
-              ),
-            ),
-          );
-        }
-      );
-    });
-  }
 
 }

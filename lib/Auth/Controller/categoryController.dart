@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mednextnew/data/models/coursemodel.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/data/models/categorymodel.dart';
+import 'package:mednextnew/data/models/usermodel.dart';
 
 import '../../constants/global.dart';
 
@@ -11,6 +12,7 @@ class CategoryController extends GetxController {
   var categories = <CategoryModel>[];
   var courses = <CourseModel>[];
   var subjects = <SubjectModel>[];
+  var teachers = <UserModel>[];
 
   var loading = false;
   var courseloading = false;
@@ -22,12 +24,10 @@ class CategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Load cached data on initialization
-    loadCachedData();
   }
 
   // Load data from cache
-  void loadCachedData() {
+  Future<void> loadCachedData() async {
     // Load categories from cache if available
     if (box.hasData('categories')) {
       var cachedCategories = box.read<List>('categories');
@@ -36,9 +36,9 @@ class CategoryController extends GetxController {
           .toList() ??
           [];
       update();
-      getCategories();
+       getCategories();
     }else{
-      getCategories();
+        getCategories();
     }
 
     // Load courses from cache if available
@@ -49,9 +49,9 @@ class CategoryController extends GetxController {
           .toList() ??
           [];
       update();
-      getCourse();
+        getCourse();
     }else{
-      getCourse();
+         getCourse();
     }
 
     // Load subjects from cache if available
@@ -62,9 +62,9 @@ class CategoryController extends GetxController {
           .toList() ??
           [];
       update();
-      getSubjects();
+         getSubjects();
     }else{
-      getSubjects();
+         getSubjects();
     }
   }
 
@@ -159,13 +159,9 @@ class CategoryController extends GetxController {
   List<SubjectModel> getSubjectsByCourse()  {
      if (subjects.isNotEmpty) {
        return subjects.where((element) {
-         var courseid = element.courseIds!.first.split("/")[0];
-         var year = element.courseIds!.first.split("/")[1];
+         var userCourse = authController.userData?.registeredCourses;
 
-         var userCourse = authController.userData?.registeredCourses?.first["course"];
-         var userYear = authController.userData?.registeredCourses?.first["year"];
-
-         return courseid == userCourse && userYear == year;
+         return element.courseIds!.contains(userCourse!.first);
 
 
        }).toList();
@@ -175,5 +171,56 @@ class CategoryController extends GetxController {
      }
     
   }
+
+  Future<void> getTeachersByCourse() async {
+
+    var year = authController.userData!.registeredCourses!;
+
+    try {
+      // Fetch data from Firestore
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('teachers').get();
+
+      // Map Firestore data to Course model
+      teachers = querySnapshot.docs.map((doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+      teachers = teachers.where((element) => element.registeredCourses!.contains(year.first)).toList();
+
+      update();
+    } catch (e) {
+      print("Error fetching courses: $e");
+    }
+  }
+
+
+  List<UserModel> getTeachersBySubject(String subjectId)  {
+    if (teachers.isNotEmpty) {
+      return teachers.where((element) {
+
+        return element.registeredSubjects!.contains(subjectId);
+
+
+      }).toList();
+
+    }else{
+      return [];
+    }
+
+  }
+
+  UserModel? getTeacherById(String teacherId)  {
+    if (teachers.isNotEmpty) {
+      return teachers.firstWhere((element) {
+
+        return element.userId! == teacherId;
+
+
+      });
+
+    }else{
+      return null;
+    }
+
+  }
+
 
 }

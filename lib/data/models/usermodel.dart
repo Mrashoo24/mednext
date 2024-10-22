@@ -8,9 +8,10 @@ class UserModel {
   String? state;
   String? photoUrl;
   String? city;
-  List<Map<String,dynamic>>? registeredCourses;
+  List<String>?  registeredCourses;
+  List<String>? registeredSubjects;
 
-  UserModel({this.userId, this.fullName, this.email, this.password,this.state,this.photoUrl,this.city,this.registeredCourses});
+  UserModel({this.userId, this.fullName, this.email, this.password,this.state,this.photoUrl,this.city,this.registeredCourses,this.registeredSubjects});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         userId: json["userId"],
@@ -20,7 +21,8 @@ class UserModel {
     state: json["state"],
     photoUrl: json["photoUrl"],
     city: json["city"],
-      registeredCourses:List<Map<String,dynamic>>.from(json["registeredCourses"].map((e) => e).toList()) ?? []
+      registeredCourses:json["registeredCourses"] == null ? [] :  List<String>.from(json["registeredCourses"].map((e) => e).toList()),
+      registeredSubjects:json["registeredSubjects"] == null ? [] : List<String>.from(json["registeredSubjects"].map((e) => e).toList()) ?? []
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,8 +33,10 @@ class UserModel {
     "state": state,
     "photoUrl": photoUrl,
     "city": city,
-    "registeredCourses" : registeredCourses ?? []
-      };
+    "registeredCourses" : registeredCourses ?? [],
+    "registeredSubjects" : registeredSubjects ?? []
+
+  };
 
   // CopyWith method
   UserModel copyWith({
@@ -43,7 +47,9 @@ class UserModel {
     String? state,
     String? photoUrl,
     String? city,
-    List<Map<String,dynamic>>? registeredCourses,
+    List<String>? registeredCourses,
+    List<String>? registeredSubjects,
+
   }) {
     return UserModel(
       userId: userId ?? this.userId,
@@ -54,6 +60,8 @@ class UserModel {
       photoUrl: photoUrl ?? this.photoUrl,
       city: city ?? this.city,
       registeredCourses: registeredCourses ?? this.registeredCourses,
+      registeredSubjects: registeredSubjects ?? this.registeredSubjects,
+
     );
   }
 }
