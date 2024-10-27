@@ -142,8 +142,12 @@ class AuthController extends GetxController {
     String? city = prefs.getString('city');
     String? photoUrl = prefs.getString('photoUrl');
     String? registeredCourses = prefs.getString('registeredCourses');
+    String? registeredSubjects = prefs.getString('registeredSubjects');
+    String? savedVideos = prefs.getString('savedVideos');
 
     var newregisteredCourses =  List<String>.from(jsonDecode(registeredCourses ?? "[]").map((e) => e).toList()) ;
+    var newRegisteredSubjects =  List<String>.from(jsonDecode(registeredSubjects ?? "[]").map((e) => e).toList()) ;
+    var newSavedVideos =  List<String>.from(jsonDecode(savedVideos ?? "[]").map((e) => e).toList()) ;
 
     if (userId != null && fullName != null && email != null) {
       var user = UserModel(
@@ -153,7 +157,9 @@ class AuthController extends GetxController {
         state: state,
         city: city,
         photoUrl: photoUrl,
-        registeredCourses: newregisteredCourses
+        registeredCourses: newregisteredCourses,
+          registeredSubjects:newRegisteredSubjects,
+          savedVideos:newSavedVideos
       );
       userData = user;
       update();

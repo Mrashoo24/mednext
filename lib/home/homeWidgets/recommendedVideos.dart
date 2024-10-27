@@ -12,6 +12,7 @@ import 'package:mednextnew/data/models/videoModel.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../constants/colors.dart';
+import '../../video/videoplayerScreen.dart';
 
 class RecommendedVideos extends StatefulWidget {
   const RecommendedVideos({super.key});
@@ -31,6 +32,7 @@ class _RecommendedVideosState extends State<RecommendedVideos> {
         categoryController.subjects.isEmpty)) {
       selectedSubject = (categoryController.subjects.first);
       videoController.loadCachedData();
+      videoController.getAllCompletedVideos();
     }
 
     super.initState();
@@ -129,6 +131,8 @@ class _RecommendedVideosState extends State<RecommendedVideos> {
                       builder: (videoController) {
 
                         var currentVideo = videoController.getRecommendedVideoForSubject(selectedSubject?.subjectId ?? "").firstOrNull;
+
+
 
                     return videoThumnailCard(currentVideo);
                   }),

@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mednextnew/data/models/coursemodel.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/data/models/categorymodel.dart';
+import 'package:mednextnew/data/models/topicModel.dart';
 import 'package:mednextnew/data/models/usermodel.dart';
 
 import '../../constants/global.dart';
@@ -13,12 +14,16 @@ class CategoryController extends GetxController {
   var courses = <CourseModel>[];
   var subjects = <SubjectModel>[];
   var teachers = <UserModel>[];
+  var topics = <TopicModel>[];
 
   var loading = false;
   var courseloading = false;
 
   var selectedCourseId = "";
   var selectedQQuestionId = "";
+
+  SubjectModel? selectedSubject ;
+  UserModel? selectedTeacher ;
 
 
   @override
@@ -66,6 +71,19 @@ class CategoryController extends GetxController {
     }else{
          getSubjects();
     }
+
+    if (box.hasData('topics')) {
+      var cachedSubjects = box.read<List>('topics');
+      topics = cachedSubjects
+          ?.map((subject) => TopicModel.fromJson(subject))
+          .toList() ??
+          [];
+      update();
+      getTopic();
+    }else{
+      getTopic();
+    }
+
   }
 
   // Fetch categories with caching logic
@@ -171,6 +189,83 @@ class CategoryController extends GetxController {
      }
     
   }
+
+  SubjectModel? getSubjectsById(String id)  {
+    if (subjects.isNotEmpty) {
+      return subjects.firstWhere((element) {
+
+        return element.subjectId! == id;
+
+
+      });
+
+    }else{
+      return null;
+    }
+
+  }
+
+
+  // Fetch subjects with caching logic
+  Future<void> getTopic() async {
+    // if (subjects.isNotEmpty) {
+    //   return; // Skip fetch if data is already cached
+    // }
+
+    if(topics.isEmpty){
+      courseloading = true;
+      update();
+    }
+    try {
+      // Fetch data from Firestore
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('topics').get();
+
+      // Map Firestore data to Subject model
+      topics = querySnapshot.docs.map((doc) => TopicModel.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+      // Cache the fetched subjects
+      box.write('topics', topics.map((subject) => subject.toJson()).toList());
+
+      update();
+    } catch (e) {
+      print("Error fetching subjects: $e");
+    } finally {
+      courseloading = false;
+      update();
+    }
+  }
+
+  TopicModel? getTopicById(String id)  {
+    if (topics.isNotEmpty) {
+      return topics.firstWhere((element) {
+
+        return element.id! == id;
+
+
+      });
+
+    }else{
+      return null;
+    }
+
+  }
+
+  List<TopicModel> getTopicBySubject(String subjectId)  {
+    if (topics.isNotEmpty) {
+      return topics.where((element) {
+
+        return element.subjectId == (subjectId);
+
+
+      }).toList();
+
+    }else{
+      return [];
+    }
+
+  }
+
+
 
   Future<void> getTeachersByCourse() async {
 

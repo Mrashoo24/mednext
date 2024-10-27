@@ -4,13 +4,16 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mednextnew/Auth/Controller/updatesController.dart';
+import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/data/models/usermodel.dart';
 import 'package:mednextnew/video/videoplayerScreen.dart';
 
 import '../Auth/Controller/AuthController.dart';
 import '../Auth/Controller/categoryController.dart';
 import '../Auth/Controller/videoController.dart';
+import '../Medicalcoursechoice/allVideoTab.dart';
 import '../data/models/videoModel.dart';
+import '../home/homeWidgets/subjectVideoWidget.dart';
 import 'colors.dart';
 
 AuthController authController = Get.put(AuthController());
@@ -34,6 +37,8 @@ Widget videoThumnailCard(VideoModel? currentVideo,
 
           return teacher == null ? SizedBox() : InkWell(
               onTap: (){
+                videoController.selectedVideoModel = currentVideo;
+                videoController.update();
           Get.to(VideoPlayerScreen());
               },
             child: Container(
@@ -164,6 +169,139 @@ Widget videoThumnailCard(VideoModel? currentVideo,
           );
         }
       );
+}
+
+
+Widget teacherAndSubjectCard(
+    {required VideoModel videoModel}) {
+
+
+  var teacherModel = categoryController.getTeacherById(videoModel.teacherId ?? "");
+
+  var subjectModel = categoryController.getSubjectsById(videoModel.subjectId ?? "");
+
+  var videoSubjectAndTeacher = videoController.videos.where((element) => (element.teacherId == videoModel.teacherId) &&(element.subjectId == videoModel.subjectId) ).toList();
+
+  return  Builder(
+      builder: (context) {
+
+        UserModel? teacher = categoryController.getTeacherById(teacherModel?.userId ?? "");
+
+        return teacher == null ? SizedBox() : InkWell(
+          onTap: (){
+
+            categoryController.selectedSubject = subjectModel;
+            categoryController.selectedTeacher = teacherModel;
+
+            categoryController.update();
+
+            Get.to(AllVideosScreen());
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+              // You might want to set a background color
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2), // Shadow color
+                  blurRadius: 4.0, // How blurry the shadow is
+                  spreadRadius: 0.0, // How much the shadow spreads
+                  offset: Offset(0, 5), // Position of the shadow (x, y)
+                ),
+              ],
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.teal,
+                          radius: 35,
+                          backgroundImage: NetworkImage(
+                            teacher!.photoUrl.toString(),
+                          ),
+                        ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      teacher!.fullName.toString(),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: kpurple,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      subjectModel?.subjectName ?? "",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: kblack,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Icon(Icons.arrow_forward_ios,color: klightGrey,size: 20,)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  children: [
+                                    buildIconRow("${videoSubjectAndTeacher.length} Videos",
+                                        Icons.access_alarm),
+                                    // buildIconRow("${currentVideo.duration} Students",Icons.video_call_outlined),
+                                    // buildIconRow("7836 Students",Icons.access_alarm)
+                                  ],
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "5" ,
+                                        // currentVideo.ratings.toString(),
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      Icon(
+                                        Icons.star,
+                                        color: kyellow,
+                                        size: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+  );
 }
 
 Widget quizCard() {

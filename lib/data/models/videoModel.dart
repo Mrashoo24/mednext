@@ -12,21 +12,26 @@ class VideoModel {
   String? videoId;
   bool? paid;
   bool? recommended;
+  String? topicId;
+  int? totalRating;
+  List<String>? slides;
+  String?  notes_pdf;
 
   VideoModel(
       {this.courseId,
-        this.description,
-        this.duration,
-        this.ratings,
-        this.subjectId,
-        this.teacherId,
-        this.thumbnail,
-        this.title,
-        this.uploadDate,
-        this.url,
-        this.videoId,
-        this.paid,
-        this.recommended});
+      this.description,
+      this.duration,
+      this.ratings,
+      this.subjectId,
+      this.teacherId,
+      this.thumbnail,
+      this.title,
+      this.uploadDate,
+      this.url,
+      this.videoId,
+      this.paid,
+      this.recommended,
+      this.topicId,this.totalRating,this.slides,this.notes_pdf});
 
   VideoModel.fromJson(Map<String, dynamic> json) {
     courseId = json['courseId'];
@@ -42,6 +47,13 @@ class VideoModel {
     videoId = json['videoId'];
     paid = json['paid'];
     recommended = json['recommended'];
+    topicId = json["topicId"];
+    totalRating = json["totalRating"];
+    notes_pdf = json["notes_pdf"];
+    slides = json["slides"] == null
+        ? []
+        : List<String>.from(
+        json["slides"].map((e) => e).toList()) ;
   }
 
   Map<String, dynamic> toJson() {
@@ -59,34 +71,41 @@ class VideoModel {
     data['videoId'] = this.videoId;
     data['paid'] = this.paid;
     data['recommended'] = this.recommended;
+    data["topicId"] = this.topicId;
+    data["totalRating"] = this.totalRating;
+    data["slides"] = this.slides;
+    data["notes_pdf"] = this.notes_pdf;
+
+
     return data;
   }
 
-  VideoModel copyWith({
-    String? courseId,
-    String? description,
-    int? duration,
-    int? ratings,
-    String? subjectId,
-    String? teacherId,
-    String? thumbnail,
-    String? title,
-    String? uploadDate,
-    String? url,
-    String? videoId,
-  }) {
+  VideoModel copyWith(
+      {String? courseId,
+      String? description,
+      int? duration,
+      int? ratings,
+      String? subjectId,
+      String? teacherId,
+      String? thumbnail,
+      String? title,
+      String? uploadDate,
+      String? url,
+      String? videoId,
+      String? topicId,int? totalRating,bool? paid,List<String>? slides,String? notes_pdf}) {
     return VideoModel(
-      courseId : courseId ?? this.courseId,
-      description : description ?? this.description,
-      duration : duration ?? this.duration,
-    ratings : ratings ?? this.ratings,
-    subjectId : subjectId ?? this.subjectId,
-    teacherId :  teacherId ?? this.teacherId,
-    thumbnail : thumbnail ?? this.thumbnail,
-    title :  title ?? this.title,
-    uploadDate : uploadDate ?? this.uploadDate,
-    url :  url ?? this.url,
-    videoId :  videoId ?? this.videoId,
-    );
+        courseId: courseId ?? this.courseId,
+        description: description ?? this.description,
+        duration: duration ?? this.duration,
+        ratings: ratings ?? this.ratings,
+        subjectId: subjectId ?? this.subjectId,
+        teacherId: teacherId ?? this.teacherId,
+        thumbnail: thumbnail ?? this.thumbnail,
+        title: title ?? this.title,
+        uploadDate: uploadDate ?? this.uploadDate,
+        url: url ?? this.url,
+        videoId: videoId ?? this.videoId,
+        paid: paid ?? this.paid,
+        topicId: topicId ?? this.topicId,totalRating:totalRating ?? this.totalRating,slides:slides ?? this.slides,notes_pdf:notes_pdf ?? this.notes_pdf);
   }
 }
