@@ -13,8 +13,13 @@ import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
+
+ final List<VideoModel> listOfVideoModel;
+
+  const VideoPlayerScreen({super.key, this.listOfVideoModel = const []});
+
   @override
-  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+  State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
@@ -272,36 +277,66 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                 child: TabBarView(
                                   children: [
                                     // ListView for "Up Next" items
-                                    ListView.builder(
-                                      itemCount: 3,
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          child: ListTile(
-                                            leading: CircleAvatar(
-                                              backgroundColor: Colors.grey[200],
-                                              child:
-                                                  Text((index + 23).toString()),
-                                            ),
-                                            title: Text(
-                                              'Pulmonology Image Based Questions',
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-                                            subtitle: Row(
-                                              children: [
-                                                Icon(Icons.star,
-                                                    size: 16,
-                                                    color: Colors.orange),
-                                                SizedBox(width: 4),
-                                                Text("4.5"),
-                                                SizedBox(width: 10),
-                                                Text("20 min"),
-                                              ],
-                                            ),
-                                            trailing:
-                                                Icon(Icons.arrow_forward_ios),
-                                          ),
+                                    Builder(
+                                      builder: (context) {
+
+                                        var videolist = widget.listOfVideoModel;
+                                            // videoController.recommendedVideoList;
+
+                                        // videolist.removeWhere((element) => element.videoId == videoController.selectedVideoModel!.videoId);
+
+
+                                        return ListView.builder(
+                                          itemCount: videolist.length,
+                                          itemBuilder: (context, index) {
+
+
+
+                                            return videolist[index].videoId  == videoController.selectedVideoModel!.videoId ?SizedBox.shrink() :  buildQBankItem(videolist[index], index,videolist,onVideoClick: (){
+                                              setState(() {
+
+                                                _videoPlayerController = VideoPlayerController.network(
+                                                  videolist[index].url ?? "",
+                                                )..initialize().then((_) {
+                                                  setState(() {});
+                                                });
+                                                _chewieController = ChewieController(
+                                                  videoPlayerController: _videoPlayerController,
+                                                  aspectRatio: 16 / 9,
+                                                  autoPlay: false,
+                                                  looping: false,
+                                                );
+                                              });
+                                            });
+                                              Card(
+                                              child: ListTile(
+                                                leading: CircleAvatar(
+                                                  backgroundColor: Colors.grey[200],
+                                                  child:
+                                                      Text((index + 23).toString()),
+                                                ),
+                                                title: Text(
+                                                  'Pulmonology Image Based Questions',
+                                                  style: TextStyle(fontSize: 14),
+                                                ),
+                                                subtitle: Row(
+                                                  children: [
+                                                    Icon(Icons.star,
+                                                        size: 16,
+                                                        color: Colors.orange),
+                                                    SizedBox(width: 4),
+                                                    Text("4.5"),
+                                                    SizedBox(width: 10),
+                                                    Text("20 min"),
+                                                  ],
+                                                ),
+                                                trailing:
+                                                    Icon(Icons.arrow_forward_ios),
+                                              ),
+                                            );
+                                          },
                                         );
-                                      },
+                                      }
                                     ),
                                     // Placeholder for "Related QBank"
                                     Center(child: Text("Related QBank")),

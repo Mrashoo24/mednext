@@ -22,6 +22,7 @@ class VideoController extends GetxController {
   bool? pdfLoading = false;
 
   VideoModel? selectedVideoModel ;
+  List<VideoModel>? recommendedVideoList = [];
 
   // Call this method to load cached data initially
   void loadCachedData() {

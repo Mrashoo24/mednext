@@ -8,6 +8,7 @@ import 'package:mednextnew/Auth/Controller/categoryController.dart';
 import 'package:mednextnew/constants/colors.dart';
 import 'package:mednextnew/constants/global.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
+import 'package:mednextnew/home/SubVideoSection/teacherScreen.dart';
 
 class FreeVideo extends StatefulWidget {
   const FreeVideo({Key? key}) : super(key: key);
@@ -57,32 +58,39 @@ class _FreeVideoState extends State<FreeVideo> {
   Padding subjectCard(SubjectModel subjectModel) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: InkWell(
+        onTap: (){
+          categoryController.selectedSubject = subjectModel;
 
-        children: [
-          Row(
-            children: [
-              Icon(Icons.heart_broken),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(subjectModel.subjectName ?? "",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  ),
+          Get.to(TeacherScreen());
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                  Text("${subjectModel.totalStudents} students Learning", style: TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 10)),
+          children: [
+            Row(
+              children: [
+                Icon(Icons.heart_broken),
+                SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(subjectModel.subjectName ?? "",
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                    ),
 
-                ],
-              ),
-            ],
-          ),
+                    Text("${subjectModel.totalStudents} students Learning", style: TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 10)),
 
-          Icon(Icons.chevron_right, color: kblack, size: 30,)
-        ],
+                  ],
+                ),
+              ],
+            ),
+
+            Icon(Icons.chevron_right, color: kblack, size: 30,)
+          ],
+        ),
       ),
     );
   }

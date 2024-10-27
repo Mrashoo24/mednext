@@ -128,17 +128,40 @@ class _SubjectVideoWidgetState extends State<SubjectVideoWidget> {
                       height: 10,
                     ),
 
-                    ListView.builder(
-                      itemCount: videoList.length > 2 ? 2 : videoList.length ,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
+                    Builder(
+                      builder: (context) {
+
+
+                        // Create a set to store unique teacher and subject combinations
+                        Set<String> uniqueTeacherSubjectPairs = {};
+
+                        // Filter the video list to keep only unique teacher-subject combinations
+                        var uniqueVideos = videoList.where((video) {
+                          // Create a unique key for each teacher-subject combination
+                          String teacherSubjectKey = '${video.teacherId}-${video.subjectId}';
+
+                          // Check if this combination is already in the set
+                          if (uniqueTeacherSubjectPairs.contains(teacherSubjectKey)) {
+                            return false; // Skip if already present
+                          } else {
+                            uniqueTeacherSubjectPairs.add(teacherSubjectKey); // Add to set if unique
+                            return true; // Include in the list
+                          }
+                        }).toList();
+
+                        return ListView.builder(
+                          itemCount: uniqueVideos.length > 2 ? 2 : uniqueVideos.length ,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
 
 
 
-                       return  teacherAndSubjectCard(videoModel: videoList[index]);
-                        // return videoThumnailCard(videoList[index],teacherProfilePic: true);
-                      },
+                           return  teacherAndSubjectCard(videoModel: uniqueVideos[index]);
+                            // return videoThumnailCard(videoList[index],teacherProfilePic: true);
+                          },
+                        );
+                      }
                     ),
                     SizedBox(
                       height: 20,

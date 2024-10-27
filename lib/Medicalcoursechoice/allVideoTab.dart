@@ -207,7 +207,7 @@ class _AllVideosScreenState extends State<AllVideosScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return _buildQBankItem(videoList[index], index);
+                    return buildQBankItem(videoList[index], index,videoList);
                   },
                 ),
               )
@@ -215,127 +215,7 @@ class _AllVideosScreenState extends State<AllVideosScreen> {
           );
   }
 
-  // Build individual QBank item
-  Widget _buildQBankItem(VideoModel videoModel, int index) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        var width = constraints.maxWidth;
-        var height = constraints.maxHeight;
 
-        return Stack(
-          children: [
-            InkWell(
-              onTap: (){
-
-                videoController.selectedVideoModel = videoModel;
-                videoController.update();
-                Get.to(VideoPlayerScreen());
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4.0,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                            child: Text("${index + 1}",
-                                style: TextStyle(color: Colors.black))),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4.0,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 20.0),
-                                      child: Text(
-                                        videoModel.title.toString(),
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(Icons.star,
-                                            color: Colors.amber, size: 14),
-                                        Text(
-                                          videoModel.ratings.toString(),
-                                          style: TextStyle(
-                                              fontSize: 12, color: klightGrey),
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text(
-                                            "• ${videoModel.duration.toString()} min",
-                                            style: TextStyle(
-                                                fontSize: 12, color: klightGrey)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (isPaidVideo(videoModel))
-                                Image.asset("asset/lock.png"),
-                              if (!isPaidVideo(videoModel))
-                                Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: klightGrey,
-                                )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            if (isNEwVideo(videoModel))
-              Positioned(
-                left: width * 0.15,
-                top: width * 0.01,
-                child: CircleAvatar(
-                  backgroundColor: Color(0xFF1AE316),
-                  radius: 5,
-                ),
-              ),
-          ],
-        );
-      },
-    );
-  }
 
   // Function to open the bottom sheet
   void _openSubjectSelectionSheet(List<TopicModel> topics) {
@@ -384,15 +264,6 @@ class _AllVideosScreenState extends State<AllVideosScreen> {
     );
   }
 
-  bool isPaidVideo(VideoModel element) => (element.paid ?? true);
-
-  bool isNEwVideo(VideoModel element) {
-    return (DateTime.now()
-            .difference(DateFormat("yyyy-MM-dd hh:mm:ss")
-                .parse(element.uploadDate.toString()))
-            .inDays <
-        10);
-  }
 }
 
 class SearchWidget extends StatelessWidget {

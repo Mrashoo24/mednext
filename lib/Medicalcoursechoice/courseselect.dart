@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mednextnew/Auth/Controller/categoryController.dart';
+import 'package:mednextnew/constants/global.dart';
 
 import '../Adddetails/adddetails.dart';
 import '../Auth/Controller/AuthController.dart';
@@ -140,7 +142,8 @@ class _SelectyourCourseState extends State<SelectyourCourse> {
                     await authController.updateAccount(
                         authController.userData!.copyWith(registeredCourses: [
                           "${controller.selectedCourseId}/${controller.selectedQQuestionId}",...authController.userData?.registeredCourses??[]])
-                    ,onComplete: (){
+
+                    ,onComplete: () async {
                       controller.loading = false;
                       controller.update();
                       Get.to( AddMoreDetails());

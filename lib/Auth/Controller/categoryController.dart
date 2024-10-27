@@ -190,6 +190,21 @@ class CategoryController extends GetxController {
     
   }
 
+  List<SubjectModel> getSubjectsByCourseId(String? courseId)  {
+    if (subjects.isNotEmpty) {
+      return subjects.where((element) {
+
+        return element.courseIds!.contains(courseId);
+
+
+      }).toList();
+
+    }else{
+      return [];
+    }
+
+  }
+
   SubjectModel? getSubjectsById(String id)  {
     if (subjects.isNotEmpty) {
       return subjects.firstWhere((element) {
