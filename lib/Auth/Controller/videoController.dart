@@ -76,6 +76,16 @@ class VideoController extends GetxController {
       return [];
     }
   }
+  List<VideoModel> getVideosById(String videoId) {
+    if (videos.isNotEmpty) {
+      var listOfVideos =
+      videos.where((element) => element.videoId == videoId).toList();
+      return listOfVideos;
+    } else {
+      return [];
+    }
+  }
+
 
   List<VideoModel> getRecommendedVideoForSubject(String subjectId) {
     if (videos.isNotEmpty) {

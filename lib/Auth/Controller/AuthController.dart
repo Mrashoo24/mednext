@@ -145,9 +145,9 @@ class AuthController extends GetxController {
     String? registeredSubjects = prefs.getString('registeredSubjects');
     String? savedVideos = prefs.getString('savedVideos');
 
-    var newregisteredCourses =  List<String>.from(jsonDecode(registeredCourses ?? "[]").map((e) => e).toList()) ;
-    var newRegisteredSubjects =  List<String>.from(jsonDecode(registeredSubjects ?? "[]").map((e) => e).toList()) ;
-    var newSavedVideos =  List<String>.from(jsonDecode(savedVideos ?? "[]").map((e) => e).toList()) ;
+    var newregisteredCourses =  List<String>.from(registeredCourses == "null" ? [] :jsonDecode(registeredCourses ?? "[]").map((e) => e).toList()) ;
+    var newRegisteredSubjects =  List<String>.from(registeredSubjects == "null" ? [] :jsonDecode(registeredSubjects ?? "[]").map((e) => e).toList()) ;
+    var newSavedVideos =  List<String>.from(savedVideos == "null" ? [] :jsonDecode(savedVideos ?? "[]").map((e) => e).toList()) ;
 
     if (userId != null && fullName != null && email != null) {
       var user = UserModel(

@@ -48,8 +48,9 @@ class _AddMoreDetailsState extends State<AddMoreDetails> {
     if (authController.userData != null) {
       nameController.text = authController.userData!.fullName ?? '';
       emailController.text = authController.userData!.email ?? '';
-      selectedState = authController.userData!.state ?? 'Maharashtra';
-      selectedCity = authController.userData!.city ?? cities[selectedState]![0];
+      selectedState = ((authController.userData!.state ?? 'Maharashtra') == "" ? "Maharashtra" : authController.userData!.state)!;
+      selectedCity = ((authController.userData!.city ??cities[selectedState]![0]) == "" ? cities[selectedState]![0] : authController.userData!.city)!;
+
       imageUrl = authController.userData!.photoUrl;
     }
   }
