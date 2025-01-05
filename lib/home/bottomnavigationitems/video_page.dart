@@ -35,7 +35,7 @@ class _VideoPageState extends State<VideoPage> with SingleTickerProviderStateMix
 
       body: Column(
         children: [
-          Padding(
+          Padding (
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(

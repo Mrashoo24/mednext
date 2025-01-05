@@ -12,3 +12,4 @@ var kyellow = Color(0xFFFFB800);
 var kgreen = Color(0xFF22F051);
 var korange = Color(0xFFF09122);
 var kred = Color(0xFFF02222);
+var kbabyblue = Color(0xFF22B2F0);
