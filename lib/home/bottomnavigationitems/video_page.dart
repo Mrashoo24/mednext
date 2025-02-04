@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mednextnew/Auth/Controller/AuthController.dart';
+import 'package:mednextnew/Auth/Controller/categoryController.dart';
+import 'package:mednextnew/Auth/Controller/videoController.dart';
 import 'package:mednextnew/constants/colors.dart';
 
+import '../../constants/global.dart';
 import '../SubVideoSection/free_video.dart';
 
 class VideoPage extends StatefulWidget {
@@ -81,7 +86,31 @@ class _VideoPageState extends State<VideoPage> with SingleTickerProviderStateMix
         FreeVideo(),
 
         // Saved Videos Tab Content
-        Center(child: Text('Saved Videos content goes here')),
+        GetBuilder<AuthController>(
+          builder: (authController) {
+            return Scaffold(
+              body:authController.userData!.savedVideos?.isEmpty ?? true
+                  ? SizedBox.shrink()
+                  : Flexible(
+                    child: ListView.builder(
+                      itemCount: authController.userData!.savedVideos?.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+
+                        var videoList = authController.userData!.savedVideos![index];
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: buildQBankItem(videoController.videos.firstWhereOrNull((e) => e.videoId == videoList), index,[]),
+                        );
+                      },
+                    ),
+                  )
+              ,
+            );
+          }
+        ),
 
         // Live Lectures Tab Content
         Center(child: Text('Live Lectures content goes here')),
@@ -93,4 +122,5 @@ class _VideoPageState extends State<VideoPage> with SingleTickerProviderStateMix
     ),
     );
   }
+
 }

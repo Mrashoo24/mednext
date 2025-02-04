@@ -7,6 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:mednextnew/Auth/Controller/categoryController.dart';
 import 'package:mednextnew/Auth/Controller/updatesController.dart';
 import 'package:mednextnew/Auth/loginscreen.dart';
 import 'package:mednextnew/constants/carousalWidget.dart';
@@ -21,6 +22,7 @@ import 'package:mednextnew/home/homeWidgets/subjectVideoWidget.dart';
 import '../../Adddetails/adddetails.dart';
 import '../../Auth/Controller/AuthController.dart';
 import '../../constants/global.dart';
+import '../bottomnavigationitems/notescreen.dart';
 import '../notificationscreen.dart';
 
 class HomescreenWidget extends StatefulWidget {
@@ -33,9 +35,10 @@ class HomescreenWidget extends StatefulWidget {
 class _HomescreenWidgetState extends State<HomescreenWidget> {
   int index = 0;
   List<Map<String, dynamic>> listOfImage = [];
-  Map<String, dynamic>? videoOftheday ;
+  Map<String, dynamic>? videoOftheday;
 
   var _currentIndex = 0;
+
   @override
   void initState() {
     setState(() {
@@ -85,7 +88,8 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       height: 20,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -112,7 +116,8 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -128,7 +133,9 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       height: 10,
                     ),
 
-                   if(videoOftheday != null) videoOfTheDayComponent(videoOftheday!["thumbnail"], videoOftheday!["title"], videoOftheday!["subtitle"], videoOftheday!["link"]),
+                    if(videoOftheday != null) videoOfTheDayComponent(
+                        videoOftheday!["thumbnail"], videoOftheday!["title"],
+                        videoOftheday!["subtitle"], videoOftheday!["link"]),
                     SizedBox(
                       height: 10,
                     ),
@@ -140,51 +147,67 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
     );
   }
 
-  Column buildQuickLinksItems(String img,String title) {
-    return Column(
-                    children: [
-                      Image.asset(img),
-                      SizedBox(height: 5,),
-                      Text(title,style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),),
-                    ],
-                  );
+  Widget buildQuickLinksItems(String img, String title) {
+    return InkWell(
+      onTap: () {
+        Get.to(NotesSubjectScreen
+          ());
+      },
+      child: Column(
+        children: [
+          Image.asset(img),
+          SizedBox(height: 5,),
+          Text(title,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),),
+        ],
+      ),
+    );
   }
 
-  Column quizComponent() {
-    return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0), // Add vertical padding to avoid clipping
-                        child: SizedBox(
-                          height: 140, // Adjust height to match the content of quizCard()
-                          child: PageView.builder(
-                            itemCount: 3, // Number of quiz cards
-                            onPageChanged: (index) {
-                              setState(() {
-                                _currentIndex = index; // Update current index when page changes
-                              });
-                            },
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0), // Add horizontal padding to align cards
-                                child: quizCard(), // Your quiz card widget
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10), // Space between PageView and dots
-                      DotsIndicator(
-                        dotsCount: 3, // Number of dots
-                        position: _currentIndex, // Active dot position
-                        decorator: DotsDecorator(
-                          activeColor: Colors.black, // Active dot color
-                          size: const Size.square(12.0), // Dot size
-                          activeSize: const Size.fromRadius(6.0), // Active dot size
-                        ),
-                      ),
-                    ],
+  Widget quizComponent() {
+    return GetBuilder<CategoryController>(builder: (catController) {
+      var currentQuizList = catController.quiz.toList();
+
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            // Add vertical padding to avoid clipping
+            child: SizedBox(
+              height: 140, // Adjust height to match the content of quizCard()
+              child: PageView.builder(
+                itemCount: currentQuizList.length, // Number of quiz cards
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex =
+                        index; // Update current index when page changes
+                  });
+                },
+                itemBuilder: (context, index) {
+                 var currentQuiz = currentQuizList[index];
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    // Add horizontal padding to align cards
+                    child: quizCard(currentQuiz), // Your quiz card widget
                   );
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 10), // Space between PageView and dots
+          DotsIndicator(
+            dotsCount: currentQuizList.length, // Number of dots
+            position: _currentIndex, // Active dot position
+            decorator: DotsDecorator(
+              activeColor: Colors.black, // Active dot color
+              size: const Size.square(12.0), // Dot size
+              activeSize: const Size.fromRadius(6.0), // Active dot size
+            ),
+          ),
+        ],
+      );
+    });
   }
 
 

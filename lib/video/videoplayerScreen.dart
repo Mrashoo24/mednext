@@ -15,8 +15,9 @@ import 'package:chewie/chewie.dart';
 class VideoPlayerScreen extends StatefulWidget {
 
  final List<VideoModel> listOfVideoModel;
+ final String? videoUrl;
 
-  const VideoPlayerScreen({super.key, this.listOfVideoModel = const []});
+  const VideoPlayerScreen({super.key, this.listOfVideoModel = const [],this.videoUrl});
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
@@ -292,7 +293,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
 
 
-                                            return videolist[index].videoId  == videoController.selectedVideoModel!.videoId ?SizedBox.shrink() :  buildQBankItem(videolist[index], index,videolist,onVideoClick: (){
+                                            return videolist[index].videoId  == videoController.selectedVideoModel!.videoId ?SizedBox.shrink() :  buildQBankItem(videolist[index], index,videolist,onItemClick: (){
                                               setState(() {
 
                                                 _videoPlayerController = VideoPlayerController.network(

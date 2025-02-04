@@ -8,7 +8,7 @@ import 'loginscreen.dart';
 import 'Createwithemail.dart';
 
 class SplashTwo extends StatefulWidget {
-  const SplashTwo({Key? key}) : super(key: key);
+  const SplashTwo({super.key});
 
   @override
   State<SplashTwo> createState() => _SplashTwoState();

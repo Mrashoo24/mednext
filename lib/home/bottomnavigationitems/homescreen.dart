@@ -39,9 +39,9 @@ class _HomescreenoneState extends State<Homescreenone> {
   List<Widget> widgetList = [
     HomescreenWidget(),
     VideoPage(),
-    Qbank(),
-    TestPage(),
-    MePage(),
+    QBank(),
+    // TestPage(),
+    // MePage(),
   ];
 
   @override
@@ -156,212 +156,212 @@ class _HomescreenoneState extends State<Homescreenone> {
                                 ),
                                 label: 'Qbank',
                               ),
-                              BottomNavigationBarItem(
-                                icon: Icon(
-                                  Icons.label,
-                                ),
-                                label: 'Test',
-                              ),
-                              BottomNavigationBarItem(
-                                icon: Icon(
-                                  Icons.person,
-                                ),
-                                label: 'Me',
-                              )
+                              // BottomNavigationBarItem(
+                              //   icon: Icon(
+                              //     Icons.label,
+                              //   ),
+                              //   label: 'Test',
+                              // ),
+                              // BottomNavigationBarItem(
+                              //   icon: Icon(
+                              //     Icons.person,
+                              //   ),
+                              //   label: 'Me',
+                              // )
                             ],
                           ),
                           body: widgetList[selectedindex],
-                          drawer: Drawer(
-                            child: ListView(
-                              children: [
-                                ListTile(
-                                  title: Image.asset("asset/Logo med 1.png"),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          "asset/hat.png",
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Explore Courses",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          "asset/price.png",
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Pricing Plan",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          "asset/share.png",
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Share",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          "asset/time.png",
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Practice Reminder",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          "asset/save.png",
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "My Saved List",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          "asset/wallet.png",
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "My Purchase",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.person_add_alt_outlined,
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Refer a friend",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.call,
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Need Help/Support",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.find<AuthController>().logout();
-                                  },
-                                  child: ListTile(
-                                    title: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.logout,
-                                          color: kdeepblue,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Logout",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // drawer: Drawer(
+                          //   child: ListView(
+                          //     children: [
+                          //       ListTile(
+                          //         title: Image.asset("asset/Logo med 1.png"),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Image.asset(
+                          //                 "asset/hat.png",
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Explore Courses",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Image.asset(
+                          //                 "asset/price.png",
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Pricing Plan",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Image.asset(
+                          //                 "asset/share.png",
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Share",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Image.asset(
+                          //                 "asset/time.png",
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Practice Reminder",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Image.asset(
+                          //                 "asset/save.png",
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "My Saved List",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Image.asset(
+                          //                 "asset/wallet.png",
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "My Purchase",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Icon(
+                          //                 Icons.person_add_alt_outlined,
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Refer a friend",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {},
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Icon(
+                          //                 Icons.call,
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Need Help/Support",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       GestureDetector(
+                          //         onTap: () {
+                          //           Get.find<AuthController>().logout();
+                          //         },
+                          //         child: ListTile(
+                          //           title: Row(
+                          //             // mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               Icon(
+                          //                 Icons.logout,
+                          //                 color: kdeepblue,
+                          //               ),
+                          //               SizedBox(
+                          //                 width: 10,
+                          //               ),
+                          //               Text(
+                          //                 "Logout",
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         );
                 });
           }),

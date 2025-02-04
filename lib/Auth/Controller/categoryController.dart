@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mednextnew/data/models/completedQuizModel.dart';
 import 'package:mednextnew/data/models/coursemodel.dart';
+import 'package:mednextnew/data/models/quizmodel.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/data/models/categorymodel.dart';
 import 'package:mednextnew/data/models/topicModel.dart';
 import 'package:mednextnew/data/models/usermodel.dart';
+import 'package:mednextnew/home/qbanks/question.dart';
 
 import '../../constants/global.dart';
+import '../../home/qbanks/allQuizTabs.dart';
 
 class CategoryController extends GetxController {
   var categories = <CategoryModel>[];
@@ -15,21 +20,24 @@ class CategoryController extends GetxController {
   var subjects = <SubjectModel>[];
   var teachers = <UserModel>[];
   var topics = <TopicModel>[];
+  var quiz = <QuizModel>[];
 
   var loading = false;
   var courseloading = false;
+  var quizloading = false;
 
   var selectedCourseId = "";
   var selectedQQuestionId = "";
 
   SubjectModel? selectedSubject ;
   UserModel? selectedTeacher ;
+  List<CompletedQuizModel> completedQuiz = [];
+  QuizModel? selectedQuizModel ;
+  Question? selectedQuestion;
+  int? selectedQuestionIndex;
 
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  bool? selectedAnswerisCorrect;
+  String? selectedAnswer;
 
   // Load data from cache
   Future<void> loadCachedData() async {
@@ -84,7 +92,24 @@ class CategoryController extends GetxController {
       getTopic();
     }
 
+
+    if (box.hasData('quiz')) {
+      var cachedQuiz = box.read<List>('quiz');
+      quiz = cachedQuiz
+          ?.map((subject) => QuizModel.fromJson(subject))
+          .toList() ??
+          [];
+      update();
+      getQuiz();
+    }else{
+      getQuiz();
+    }
+
+    getAllCompletedQuiz();
   }
+
+
+
 
   // Fetch categories with caching logic
   Future<void> getCategories() async {
@@ -331,6 +356,201 @@ class CategoryController extends GetxController {
     }
 
   }
+
+  Future<void> getQuiz() async {
+    // if (categories.isNotEmpty) {
+    //   return; // Skip fetch if data is already cached
+    // }
+
+    if(categories.isEmpty){
+      quizloading = true;
+      update();
+    }
+
+    try {
+      // Fetch data from Firestore
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('quiz').get();
+
+      // Map Firestore data to Category model
+      quiz = querySnapshot.docs.map((doc) => QuizModel.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+      // Cache the fetched categories
+      box.write('quiz', quiz.map((quizD) => quizD.toJson()).toList());
+
+      update();
+    } catch (e) {
+      print("Error fetching categories: $e");
+    } finally {
+      quizloading = false;
+      update();
+    }
+  }
+
+  List<QuizModel> getQuizFromSubjectId(String? subjectId)  {
+    if (quiz.isNotEmpty) {
+      return quiz.where((element) {
+
+        return element.subjectId!.toLowerCase().contains(subjectId.toString());
+
+
+      }).toList();
+
+    }else{
+      return [];
+    }
+
+  }
+
+  Future<void> getAllCompletedQuiz() async {
+
+    try {
+// Fetch data from Firestore
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('completedQuiz').where("uid",isEqualTo: authController.userData!.userId.toString()).get();
+
+// Map Firestore data to Video model
+      completedQuiz = querySnapshot.docs
+          .map((doc) => CompletedQuizModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+
+// Cache the fetched videos
+
+      update();
+    } catch (e) {
+      print("Error fetching completedQuiz: $e");
+    } finally {
+
+    }
+  }
+
+  Future<void> selectedQuiz(QuizModel quizModel) async {
+    selectedQuizModel = quizModel;
+    selectedAnswerisCorrect = null;
+    selectedAnswer = null;
+    update();
+  }
+
+  Future<bool> currentActiveQuestion() async {
+
+    if (selectedQuizModel != null) {
+      var completedQuizModel = completedQuiz.firstWhere(
+            (quiz) => quiz.id == selectedQuizModel!.quizId,
+        orElse: () => CompletedQuizModel(),
+      );
+
+      if (completedQuizModel.questionsList != null) {
+       selectedQuestion = selectedQuizModel!.questionsList!.firstWhereOrNull(
+               (q) => !completedQuizModel.questionsList!.map((e) => e.questionId).contains(q.questionId),);
+       if (selectedQuestion == null) return true;
+       selectedQuestionIndex = selectedQuizModel!.questionsList!.map((e) => e.questionId).toList().indexOf(selectedQuestion!.questionId);
+      } else {
+        selectedQuestion = selectedQuizModel!.questionsList!.first;
+        selectedQuestionIndex = 0;
+      }
+    } else {
+      selectedQuestion = null;
+
+    }
+    update();
+    return false;
+  }
+
+  Future<void> addCompletedQuiz(CompletedQuizModel completedQuizModel) async {
+    try {
+      await FirebaseFirestore.instance.collection('completedQuiz').doc(completedQuizModel.id).set(completedQuizModel.toJson());
+      completedQuiz.add(completedQuizModel);
+      update();
+    } catch (e) {
+      print("Error adding completedQuiz: $e");
+    }
+  }
+
+  Future<void> updateCompletedQuiz(CompletedQuizModel completedQuizModel) async {
+    try {
+      await FirebaseFirestore.instance.collection('completedQuiz').doc(completedQuizModel.id).update(completedQuizModel.toJson());
+      var index = completedQuiz.indexWhere((quiz) => quiz.id == completedQuizModel.id);
+      completedQuiz[index] = completedQuizModel;
+      update();
+    } catch (e) {
+      print("Error updating completedQuiz: $e");
+    }
+  }
+
+  Future<bool> onAnswerTap(Question question, String selectedAnswers) async {
+    if (selectedQuizModel != null) {
+      selectedAnswer = selectedAnswers;
+      update()  ;
+      var completedQuizModel = completedQuiz.firstWhere(
+            (quiz) => quiz.id == selectedQuizModel!.quizId,
+        orElse: () => CompletedQuizModel(),
+      );
+
+      bool isCorrect = question.correctAnswer == selectedAnswer;
+        var present = false;
+      if (completedQuizModel.questionsList != null) {
+        present = true;
+        var existingQuestion = completedQuizModel.questionsList!.firstWhere(
+              (q) => q.questionId == question.questionId,
+          orElse: () => Question(),
+        );
+
+        if (existingQuestion.questionId != null) {
+          existingQuestion.selectedAnswer = selectedAnswer;
+          existingQuestion.isCorrect = isCorrect;
+
+          // completedQuizModel.questionsList![completedQuizModel.questionsList!.indexWhere((e) => e.questionId == existingQuestion.)].add(question);
+        } else {
+          question.selectedAnswer = selectedAnswer;
+          question.isCorrect = isCorrect;
+          completedQuizModel.questionsList!.add(question);
+        }
+      } else {
+        present = false;
+        completedQuizModel = CompletedQuizModel(
+          courseId: selectedQuizModel!.courseId,
+          date: DateTime.now().toString(),
+          id: selectedQuizModel!.quizId,
+          subjectId: selectedQuizModel!.subjectId,
+          topicId: selectedQuizModel!.topicId,
+          uid: authController.userData!.userId,
+          teacherId: selectedQuizModel!.teacherId,
+          rating: 0,
+          review: "",
+          videoId: selectedQuizModel!.videoId,
+        );
+        completedQuizModel.questionsList = [question];
+      }
+      selectedAnswerisCorrect = isCorrect;
+      update();
+
+      if (present) {
+        await updateCompletedQuiz(completedQuizModel);
+        await  Future.delayed(Duration(seconds: 2));
+        selectedAnswer = null;
+        var result =await currentActiveQuestion();
+        if (result) {
+          print("Quiz Completed");
+          Get.snackbar("Quiz Completed", "You have completed the quiz",backgroundColor: Colors.green,colorText: Colors.white,);
+          Get.off(AllQuizScreen());
+        }
+
+      } else {
+        await addCompletedQuiz(completedQuizModel);
+      await  Future.delayed(Duration(seconds: 2));
+        selectedAnswer = null;
+        var result =await currentActiveQuestion();
+        if (result) {
+          print("Quiz Completed");
+          Get.snackbar("Quiz Completed", "You have completed the quiz",backgroundColor: Colors.green,colorText: Colors.white);
+          Get.off(AllQuizScreen());
+
+        }
+      }
+      return isCorrect;
+    }
+    return false;
+  }
+
 
 
 }

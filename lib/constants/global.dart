@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:mednextnew/Auth/Controller/updatesController.dart';
+import 'package:mednextnew/data/models/quizmodel.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/data/models/usermodel.dart';
 import 'package:mednextnew/video/videoplayerScreen.dart';
@@ -15,6 +16,8 @@ import '../Auth/Controller/videoController.dart';
 import '../Medicalcoursechoice/allVideoTab.dart';
 import '../data/models/videoModel.dart';
 import '../home/homeWidgets/subjectVideoWidget.dart';
+import '../home/qbanks/question.dart';
+import '../video/singleVideoPlayer.dart';
 import 'colors.dart';
 
 AuthController authController = Get.put(AuthController());
@@ -451,7 +454,7 @@ Widget teacherCard(
   });
 }
 
-Widget quizCard() {
+Widget quizCard(QuizModel currentQui) {
   return false
       ? SizedBox()
       : Container(
@@ -482,7 +485,8 @@ Widget quizCard() {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Pulmonology Image Based Questions',
+                        currentQui
+                        .title ?? "",
                         style: TextStyle(
                           fontSize: 14,
                           color: kblack,
@@ -495,27 +499,20 @@ Widget quizCard() {
                       ),
                       Row(
                         children: [
+                          Icon(Icons.star,
+                              color: Colors.amber, size: 14),
                           Text(
-                            "10 Ques",
-                            style: TextStyle(fontSize: 14, color: kblack),
+                            currentQui.ratings.toString(),
+                            style: TextStyle(
+                                fontSize: 12, color: klightGrey),
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.circle,
-                            size: 2,
-                            color: kblack,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
+                          SizedBox(width: 8),
                           Text(
-                            "20 mins",
-                            style: TextStyle(fontSize: 14, color: kblack),
-                          ),
+                               "• ${currentQui.questionsList!.length.toString()} questions",
+                              style: TextStyle(
+                                  fontSize: 12, color: klightGrey)),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -528,7 +525,7 @@ Widget quizCard() {
                         padding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                         child: Text(
-                          "Physiology",
+                          categoryController.getSubjectsById(currentQui.subjectId ??"")!.subjectName ?? "",
                           style: TextStyle(fontSize: 12, color: kskyblue),
                         ),
                         decoration: BoxDecoration(
@@ -538,19 +535,33 @@ Widget quizCard() {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        child: Text(
-                          "Start Quizzes",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
+                      InkWell(
+                        onTap: () async {
+                          // Handle navigation for QuizModel if needed
+                          categoryController.selectedQuiz(currentQui);
+                          var result = await categoryController.currentActiveQuestion();
+
+                          if(!result) {
+                            Get.to(Questions());
+                          }else{
+                            Get.snackbar("This Quiz is Completed", "You have already completed this quiz",backgroundColor: Colors.red,colorText: Colors.white,snackPosition: SnackPosition.BOTTOM);
+                          }
+
+                        },
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                          child: Text(
+                            "Start Quizzes",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          decoration: BoxDecoration(
+                              color: kdeepblue,
+                              borderRadius: BorderRadius.circular(7)),
                         ),
-                        decoration: BoxDecoration(
-                            color: kdeepblue,
-                            borderRadius: BorderRadius.circular(7)),
                       )
                     ],
                   ),
@@ -652,7 +663,7 @@ Widget videoOfTheDayComponent(
       builder: (controller) {
         return GestureDetector(
           onTap: () {
-            Get.toNamed(link); // Navigating to the link
+            Get.to(SingleVideoPlayerScreen(videoUrl: link,title: title,)); // Navigating to the link
           },
           child: Container(
             decoration: BoxDecoration(
@@ -734,10 +745,10 @@ Widget videoOfTheDayComponent(
       });
 }
 
-// Build individual QBank item
-Widget buildQBankItem(
-    VideoModel videoModel, int index, List<VideoModel> videoList,
-    {void Function()? onVideoClick}) {
+
+Widget buildQBankItem<T>(
+    T model, int index, List<T> modelList,
+    {void Function()? onItemClick}) {
   return LayoutBuilder(
     builder: (BuildContext context, BoxConstraints constraints) {
       var width = constraints.maxWidth;
@@ -746,24 +757,44 @@ Widget buildQBankItem(
       return Stack(
         children: [
           InkWell(
-            onTap: () {
-              videoController.selectedVideoModel = videoModel;
-              if (onVideoClick == null) {
-                videoController.recommendedVideoList = videoList;
+            onTap: () async {
+              if (model is VideoModel) {
+                videoController.selectedVideoModel = model;
+                if (onItemClick == null) {
+                  videoController.recommendedVideoList = modelList.cast<VideoModel>();
+                }
+                videoController.update();
+              } else if (model is QuizModel) {
+                categoryController.selectedQuizModel = model;
+                // if (onItemClick == null) {
+                //   categoryController.recommendedVideoList = modelList.cast<VideoModel>();
+                // }
+                categoryController.update();
               }
-              videoController.update();
 
-              if (onVideoClick != null) {
-                onVideoClick();
+              if (onItemClick != null) {
+                onItemClick();
               } else {
-                Get.to(VideoPlayerScreen(
-                  listOfVideoModel: videoList,
-                ));
+                if (model is VideoModel) {
+                  Get.to(VideoPlayerScreen(
+                    listOfVideoModel: modelList.cast<VideoModel>(),
+                  ));
+                }else  if (model is QuizModel){
+                  // Handle navigation for QuizModel if needed
+                  categoryController.selectedQuiz(model);
+                  var result = await categoryController.currentActiveQuestion();
+
+                 if(!result) {
+                    Get.to(Questions());
+                  }else{
+                   Get.snackbar("This Quiz is Completed", "You have already completed this quiz",backgroundColor: Colors.red,colorText: Colors.white,snackPosition: SnackPosition.BOTTOM);
+                 }
+                }
               }
             },
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Container(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -790,7 +821,7 @@ Widget buildQBankItem(
                     Expanded(
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10.0),
@@ -811,7 +842,9 @@ Widget buildQBankItem(
                                   Padding(
                                     padding: const EdgeInsets.only(right: 20.0),
                                     child: Text(
-                                      videoModel.title.toString(),
+                                      model is VideoModel
+                                          ? model.title.toString()
+                                          : (model as QuizModel).title.toString(),
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600),
@@ -822,13 +855,17 @@ Widget buildQBankItem(
                                       Icon(Icons.star,
                                           color: Colors.amber, size: 14),
                                       Text(
-                                        videoModel.ratings.toString(),
+                                        model is VideoModel
+                                            ? model.ratings.toString()
+                                            : (model as QuizModel).ratings.toString(),
                                         style: TextStyle(
                                             fontSize: 12, color: klightGrey),
                                       ),
                                       SizedBox(width: 8),
                                       Text(
-                                          "• ${videoModel.duration.toString()} min",
+                                          model is VideoModel
+                                              ? "• ${model.duration.toString()} min"
+                                              : "• ${(model as QuizModel).questionsList!.length.toString()} questions",
                                           style: TextStyle(
                                               fontSize: 12, color: klightGrey)),
                                     ],
@@ -836,9 +873,16 @@ Widget buildQBankItem(
                                 ],
                               ),
                             ),
-                            if (isPaidVideo(videoModel))
+                            if (model is VideoModel && isPaidVideo(model))
                               Image.asset("asset/lock.png"),
-                            if (!isPaidVideo(videoModel))
+                            if (model is QuizModel && isPaidQuiz(model))
+                              Image.asset("asset/lock.png"),
+                            if (model is VideoModel && !isPaidVideo(model))
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: klightGrey,
+                              ),
+                            if (model is QuizModel && !isPaidQuiz(model))
                               Icon(
                                 Icons.keyboard_arrow_right,
                                 color: klightGrey,
@@ -852,7 +896,16 @@ Widget buildQBankItem(
               ),
             ),
           ),
-          if (isNEwVideo(videoModel))
+          if (model is VideoModel && isNEwVideo(model))
+            Positioned(
+              left: width * 0.15,
+              top: width * 0.01,
+              child: CircleAvatar(
+                backgroundColor: Color(0xFF1AE316),
+                radius: 5,
+              ),
+            ),
+          if (model is QuizModel && isNEwQuiz(model))
             Positioned(
               left: width * 0.15,
               top: width * 0.01,
@@ -874,5 +927,15 @@ bool isNEwVideo(VideoModel element) {
           .difference(DateFormat("yyyy-MM-dd hh:mm:ss")
               .parse(element.uploadDate.toString()))
           .inDays <
+      10);
+}
+
+bool isPaidQuiz(QuizModel element) => (element.paid ?? true);
+
+bool isNEwQuiz(QuizModel element) {
+  return (DateTime.now()
+      .difference(DateFormat("yyyy-MM-dd hh:mm:ss")
+      .parse(element.uploadDate.toString()))
+      .inDays <
       10);
 }

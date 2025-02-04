@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +8,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:mednextnew/Auth/Controller/categoryController.dart';
 import 'package:mednextnew/constants/colors.dart';
 import 'package:mednextnew/constants/global.dart';
+import 'package:mednextnew/data/models/quizmodel.dart';
 import 'package:mednextnew/data/models/subjectModel.dart';
 import 'package:mednextnew/home/SubVideoSection/teacherScreen.dart';
 
@@ -20,7 +22,6 @@ class FreeVideo extends StatefulWidget {
 class _FreeVideoState extends State<FreeVideo> {
   @override
   Widget build(BuildContext context) {
-    var width0;
     return Scaffold(
       body: GetBuilder<CategoryController>(
           init: categoryController,
@@ -60,6 +61,42 @@ class _FreeVideoState extends State<FreeVideo> {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
       child: InkWell(
         onTap: (){
+          // FirebaseFirestore.instance.collection("quiz").add({
+          //   "courseId": "course123",
+          //   "description": "Sample quiz description",
+          //   "questions": 10,
+          //   "ratings": 5,
+          //   "subjectId": "subject123",
+          //   "teacherId": "teacher123",
+          //   "thumbnail": "http://example.com/thumbnail.jpg",
+          //   "title": "Sample Quiz Title",
+          //   "uploadDate": "2023-10-01",
+          //   "url": "http://example.com/quiz",
+          //   "videoId": "video123",
+          //   "paid": false,
+          //   "recommended": true,
+          //   "topicId": "topic123",
+          //   "totalRating": 4,
+          //   "slides": ["slide1.pdf", "slide2.pdf"],
+          //   "notes_pdf": "notes.pdf",
+          //   "quizId": "quiz123",
+          //   "questionsList": [
+          //     {
+          //       "questionId": "q1",
+          //       "questionText": "What is 2 + 2?",
+          //       "options": ["3", "4", "5", "6"],
+          //       "correctAnswer": "4",
+          //       "quizId": "quiz123"
+          //     },
+          //     {
+          //       "questionId": "q2",
+          //       "questionText": "What is the capital of France?",
+          //       "options": ["Berlin", "Madrid", "Paris", "Rome"],
+          //       "correctAnswer": "Paris",
+          //       "quizId": "quiz123"
+          //     }
+          //   ]
+          // });
           categoryController.selectedSubject = subjectModel;
 
           Get.to(TeacherScreen());
